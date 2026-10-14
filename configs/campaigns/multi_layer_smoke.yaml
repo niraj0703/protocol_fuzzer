@@ -1,0 +1,36 @@
+name: multi_layer_smoke
+mode: dry-run
+max_cases: 40
+rate_limit_pps: 1
+
+layers:
+  packet:
+    enabled: true
+    protocols:
+      - generic-tlv
+  network:
+    enabled: true
+    protocols:
+      - ipv4-icmp
+  routing:
+    enabled: true
+    protocols:
+      - bgp-like
+      - ospf-hello-like
+  encryption_vpn:
+    enabled: true
+    protocols:
+      - tls-clienthello-like
+      - ikev2-sa-init-like
+      - wireguard-initiation-like
+
+oracles:
+  - no_crash
+  - no_timeout
+  - no_unexpected_state_transition
+  - no_resource_leak
+
+report:
+  format: json
+  save_payload_hex: true
+  save_reproducer: true

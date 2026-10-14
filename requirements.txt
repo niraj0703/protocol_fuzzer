@@ -1,0 +1,6 @@
+# The framework and the web console run on the Python standard library only.
+# Optional:
+# pyyaml    full YAML support for campaign files (a built-in subset parser is used otherwise)
+# pytest    run the tests
+# scapy     future raw transports and PCAP work
+# dpkt

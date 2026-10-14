@@ -1,0 +1,43 @@
+# Live run against systems YOU own, in an isolated lab. Review every target before using --confirm-lab.
+name: live_lab_example
+mode: live
+max_cases: 40
+rate_limit_pps: 5
+
+layers:
+  routing:
+    enabled: true
+    protocols:
+      - bgp-like
+  encryption_vpn:
+    enabled: true
+    protocols:
+      - tls-clienthello-like
+      - wireguard-initiation-like
+
+# Only protocols listed here are sent. `process` enables crash and leak monitoring (Linux, exact process name).
+targets:
+  bgp-like:
+    host: 127.0.0.1
+    port: 1179
+    transport: tcp
+    process: bgpd
+  tls-clienthello-like:
+    host: 127.0.0.1
+    port: 8443
+    transport: tcp
+  wireguard-initiation-like:
+    host: 127.0.0.1
+    port: 51820
+    transport: udp
+
+oracles:
+  - no_crash
+  - no_timeout
+  - no_unexpected_state_transition
+  - no_resource_leak
+
+report:
+  format: json
+  save_payload_hex: true
+  save_reproducer: true
