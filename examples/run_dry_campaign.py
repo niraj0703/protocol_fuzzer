@@ -28,7 +28,6 @@ def main():
     except ConfigError as exc:
         parser.error(str(exc))
 
-    config["mode"] = "dry-run"  # this script never sends traffic, even for a live campaign file
     reporter = run_campaign(config, seed=args.seed, max_cases=args.cases, protocols=args.protocol, only=args.only)
     if args.only and not reporter.results:
         parser.error(f"no case named {args.only!r}; check --protocol and --seed match the original run")

@@ -12,9 +12,9 @@
 
 ## Milestone 2: Transport adapters
 
-- UDP transport (done)
-- TCP transport (done)
-- Raw socket transport (open: needed for OSPF and ICMP live runs)
+- UDP transport
+- TCP transport
+- Raw socket transport
 - TLS transport
 - PCAP replay transport
 
@@ -24,15 +24,12 @@
 - IPv4/ICMP model
 - BGP-like routing model
 - TLS ClientHello-like model
-- IKEv2 proposal model (done: SA_INIT skeleton)
-- OSPF Hello and WireGuard initiation models (done)
+- IKEv2 proposal model
 
 ## Milestone 4: Monitors
 
-- Process status monitor (done)
-- Resource (memory, file descriptor) monitor (done)
+- Process status monitor
 - systemd monitor
-- Host security audit via Lynis (done)
 - dmesg monitor
 - routing neighbor monitor
 - VPN tunnel monitor
@@ -42,7 +39,7 @@
 
 - Protocol template editor
 - State machine learning/import
-- Crash minimizer (done)
+- Crash minimizer
 - Reproducer packaging
 - HTML reports (done: `ui/`, `--html`)
 - CI integration

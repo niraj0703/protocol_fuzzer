@@ -121,16 +121,9 @@ is, and `--only <case name>` regenerates exactly that case.
 
 ## Result classification
 
-`core/oracles.py` maps what the transport, monitor and model observed to the statuses in `test_strategy.md`.
-All four oracles in the campaign file are implemented. Models supply protocol knowledge through
-`expected["must_reject"]` and `response_accepted()`; `timeout_is_normal` marks silent protocols. A dry run
-reports `DRY_RUN` for every case.
-
-## Live mode and minimizing
-
-`core/campaign.py` builds a lab-guarded UDP or TCP transport and an optional process monitor per target.
-`run_campaign` refuses live mode without `confirm_lab=True`. `core/minimizer.py` is a delta-debugging
-reducer driven by a `still_fails(payloads)` callback; `run_variant` re-sends one case with replaced bytes.
+`core/oracles.py` maps what the transport and monitor observed to the statuses in `test_strategy.md`.
+Only `no_crash` and `no_timeout` are implemented. A campaign file may list the other oracles, but reports
+state that they were not evaluated. A dry run reports `DRY_RUN` for every case.
 
 ## UI
 
@@ -146,14 +139,3 @@ core/reporter.py       render_html() embeds a report in that same file
 | `POST /api/run` | `{protocols, cases, seed}` runs a dry campaign and returns the report |
 | `GET /api/runs`, `GET /api/runs/<id>` | In-memory history (last 20 runs) |
 | `GET /api/runs/<id>/export` | Self-contained HTML report |
-
-
-## Host audit (Lynis)
-
-`core/lynis.py` runs `lynis audit system` and parses its report file (`key=value`, `key[]=value` for repeated
-entries such as `warning[]`). `audit()` raises `LynisUnavailable` if Lynis is missing, times out, or exits
-without a report; callers (the CLI scripts) catch this and continue without it. `compare()` diffs two
-snapshots: hardening index change, new/resolved warnings, new suggestions. `run_live_campaign.py --lynis` runs
-it before and after a campaign and stores the diff in `reporter.meta["lynis"]`; the console's summary pane
-reads that key if present. It is a host-level check, not a per-case monitor, and is not reachable from the
-web console.

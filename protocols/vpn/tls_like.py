@@ -40,14 +40,6 @@ class TlsClientHelloLikeModel(ProtocolModel):
         ] + body
         return assemble(parts, mutated, label="ClientHello record")
 
-    def response_accepted(self, case, responses) -> bool:
-        # A handshake record (0x16) carrying a ServerHello (type 2).
-        for h in responses:
-            b = bytes.fromhex(h)
-            if len(b) >= 6 and b[0] == 0x16 and b[5] == 2:
-                return True
-        return False
-
     def generate_cases(self, max_cases: int) -> Iterable[FuzzCase]:
         candidates = [
             ("valid_like", self._client_hello()),
@@ -66,5 +58,5 @@ class TlsClientHelloLikeModel(ProtocolModel):
                 protocol="tls-clienthello-like",
                 payloads=[packet.payload],
                 metadata={"mutation": name, "size": len(packet.payload), **packet_metadata([packet])},
-                expected={"not_allowed": ["unexpected_handshake_success", "crash", "hang"], "must_reject": name != "valid_like"},
+                expected={"not_allowed": ["unexpected_handshake_success", "crash", "hang"]},
             )

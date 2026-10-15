@@ -2,7 +2,5 @@
 # Optional:
 # pyyaml    full YAML support for campaign files (a built-in subset parser is used otherwise)
 # pytest    run the tests
-# Lynis is a separate system package (not pip), used by --lynis and run_lynis_audit.py.
-# Install it with your OS package manager: apt install lynis / dnf install lynis / brew install lynis
 # scapy     future raw transports and PCAP work
 # dpkt

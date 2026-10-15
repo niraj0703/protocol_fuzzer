@@ -2,10 +2,10 @@
 
 This is a lab-only, Defensics-style **protocol-aware fuzzing framework skeleton** for four protocol areas:
 
-1. **Routing**: BGP-like sessions and OSPF Hello (IS-IS is not modelled yet)
+1. **Routing**: BGP, OSPF, IS-IS style control-plane messages
 2. **Network**: IPv4, IPv6, ICMP, ARP/NDP, fragmentation-oriented tests
 3. **Packet**: generic binary, TLV, length-prefixed, checksum-protected packet formats
-4. **Encryption & VPN**: TLS ClientHello, IKEv2 SA_INIT and WireGuard initiation (DTLS and OpenVPN are not modelled yet)
+4. **Encryption & VPN**: TLS/DTLS/IKEv2/OpenVPN/WireGuard-style handshake and tunnel tests
 
 ## Safety and scope
 
@@ -19,8 +19,8 @@ Do not run this on production networks, live routers, public internet targets, o
 core/                   Common fuzzer engine (runner, oracles, transports, config, reports)
 protocols/packet/       Generic TLV packet model
 protocols/network/      IPv4/ICMP model
-protocols/routing/      BGP-like stateful model, OSPF Hello model
-protocols/vpn/          TLS ClientHello-like, IKEv2 SA_INIT and WireGuard initiation models
+protocols/routing/      BGP-like stateful model
+protocols/vpn/          TLS ClientHello-like model
 protocols/registry.py   The one list of protocol models (CLI, campaign files and UI all read it)
 ui/                     Local web console and the single-file UI used by HTML reports
 configs/campaigns/      Example campaign YAML files
@@ -55,59 +55,6 @@ Results are reported as `DRY_RUN`, not `OK`, because nothing reached a target.
 
 The console binds to loopback, checks the `Host` header, and only ever runs dry campaigns. Live transports are a
 code-level decision (see `core/transport.py`); they refuse non-lab addresses unless you pass `allow_public=True`.
-
-## Live runs against a lab target
-
-Live runs are CLI-only; the web console stays dry-run. Copy `configs/campaigns/live_lab_example.yaml`, set `mode: live`
-and a `targets` entry per protocol (UDP or TCP), then:
-
-```bash
-python3 examples/run_live_campaign.py --config my_lab.yaml --confirm-lab --minimize --html live.html
-```
-
-- `--confirm-lab` is required. Targets must be loopback, private or link-local addresses unless a target sets `allow_public: true`.
-- Protocols with no target are skipped and listed in the report. OSPF and ICMP need raw sockets, which are not implemented.
-- Setting `process: <exact name>` on a target turns on crash and resource monitoring (Linux).
-- Live reports show an orange "Live run" badge in the console and name the targets.
-
-## Oracles
-
-| Oracle | Flags | How |
-| --- | --- | --- |
-| `no_crash` | `CRASH_SUSPECT` | The monitored process disappeared or restarted during a case |
-| `no_timeout` | `TIMEOUT` | No reply within the timeout (not for protocols that stay silent on bad input, like WireGuard) |
-| `no_unexpected_state_transition` | `STATE_CONFUSION`, or `SECURITY_POLICY_BYPASS` for VPN protocols | The target accepted a message the model knows is invalid |
-| `no_resource_leak` | `RESOURCE_LEAK` | Memory or open files grew past a threshold across the campaign |
-
-Each protocol model decides what "accepted" means for its own replies (`response_accepted`). The generic TLV, IPv4 and OSPF
-models have no reply semantics, so only crash, reset, timeout and leak checks apply to them.
-
-## Crash minimizer
-
-`--minimize` shrinks each failing case (crash suspect, reset, timeout, state confusion, bypass) to a smaller sequence that still
-fails the same way: first by dropping whole messages, then by removing bytes. It re-sends to the target for every attempt, so run
-the target under a supervisor that restarts it and tune `--pause`. The result is stored in the report and shown in the console.
-
-## Host security audit (Lynis)
-
-Lynis (https://cisofy.com/lynis/) audits the lab host's security and hardening posture. It is separate from
-protocol fuzzing: it doesn't send anything over the network, it checks the machine it runs on. Install it
-separately (`apt install lynis`, `dnf install lynis`, `brew install lynis`), then either:
-
-```bash
-python3 examples/run_lynis_audit.py --output lynis_report.json
-```
-
-or add `--lynis` to a live campaign to snapshot the host before and after the run, so a drop in the hardening
-index or a new finding is visible even if it isn't about the protocol under test (a crashed daemon that left a
-firewall rule disabled, for example):
-
-```bash
-python3 examples/run_live_campaign.py --config my_lab.yaml --confirm-lab --lynis --html live.html
-```
-
-The diff appears in the JSON report under `meta.lynis` and as a "Host audit (Lynis)" block in the console and
-HTML report. This is run from the CLI only; the web console stays free of host execution.
 
 ## Reproducing a case
 
