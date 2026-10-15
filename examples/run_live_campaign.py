@@ -10,6 +10,7 @@ sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
 from core.campaign import run_campaign, run_variant
 from core.config import ConfigError, load_campaign
 from core.lab_guard import LabGuardError
+from core.lynis import LynisUnavailable, audit as lynis_audit, compare as lynis_compare
 from core.minimizer import minimize
 from protocols.registry import PROTOCOLS
 
@@ -29,7 +30,19 @@ def main():
     parser.add_argument("--minimize", action="store_true", help="shrink each failing case to a minimal reproducer")
     parser.add_argument("--max-minimize-tests", type=int, default=200)
     parser.add_argument("--pause", type=float, default=0.5, help="seconds between minimizer attempts (let a supervisor restart the target)")
+    parser.add_argument("--lynis", action="store_true",
+                        help="audit this host's security posture (Lynis) before and after the campaign")
+    parser.add_argument("--lynis-full", action="store_true", help="with --lynis, skip Lynis's --quick flag")
     args = parser.parse_args()
+
+    lynis_before = None
+    if args.lynis:
+        try:
+            print("Running Lynis audit (baseline)...")
+            lynis_before = lynis_audit(quick=not args.lynis_full)
+            print(f"  hardening index: {lynis_before.get('hardening_index', 'unknown')}")
+        except LynisUnavailable as exc:
+            print(f"Lynis audit skipped: {exc}")
 
     try:
         config = load_campaign(args.config)
@@ -43,6 +56,19 @@ def main():
 
     for pid, why in reporter.meta.get("skipped", {}).items():
         print(f"Skipped {pid}: {why}")
+
+    if lynis_before is not None:
+        try:
+            print("Running Lynis audit (after)...")
+            lynis_after = lynis_audit(quick=not args.lynis_full)
+            diff = lynis_compare(lynis_before, lynis_after)
+            reporter.meta["lynis"] = {"before": lynis_before, "after": lynis_after, "diff": diff}
+            print(f"  hardening index: {diff['hardening_index_before']} -> {diff['hardening_index_after']}"
+                  f"  new warnings: {len(diff['new_warnings'])}  new suggestions: {len(diff['new_suggestions'])}")
+            for w in diff["new_warnings"]:
+                print(f"    [{w.get('id', '?')}] {w.get('description', '')}")
+        except LynisUnavailable as exc:
+            print(f"Lynis after-audit skipped: {exc}")
 
     if args.minimize:
         for r in reporter.results:

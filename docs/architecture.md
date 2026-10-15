@@ -146,3 +146,14 @@ core/reporter.py       render_html() embeds a report in that same file
 | `POST /api/run` | `{protocols, cases, seed}` runs a dry campaign and returns the report |
 | `GET /api/runs`, `GET /api/runs/<id>` | In-memory history (last 20 runs) |
 | `GET /api/runs/<id>/export` | Self-contained HTML report |
+
+
+## Host audit (Lynis)
+
+`core/lynis.py` runs `lynis audit system` and parses its report file (`key=value`, `key[]=value` for repeated
+entries such as `warning[]`). `audit()` raises `LynisUnavailable` if Lynis is missing, times out, or exits
+without a report; callers (the CLI scripts) catch this and continue without it. `compare()` diffs two
+snapshots: hardening index change, new/resolved warnings, new suggestions. `run_live_campaign.py --lynis` runs
+it before and after a campaign and stores the diff in `reporter.meta["lynis"]`; the console's summary pane
+reads that key if present. It is a host-level check, not a per-case monitor, and is not reachable from the
+web console.

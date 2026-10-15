@@ -88,6 +88,27 @@ models have no reply semantics, so only crash, reset, timeout and leak checks ap
 fails the same way: first by dropping whole messages, then by removing bytes. It re-sends to the target for every attempt, so run
 the target under a supervisor that restarts it and tune `--pause`. The result is stored in the report and shown in the console.
 
+## Host security audit (Lynis)
+
+Lynis (https://cisofy.com/lynis/) audits the lab host's security and hardening posture. It is separate from
+protocol fuzzing: it doesn't send anything over the network, it checks the machine it runs on. Install it
+separately (`apt install lynis`, `dnf install lynis`, `brew install lynis`), then either:
+
+```bash
+python3 examples/run_lynis_audit.py --output lynis_report.json
+```
+
+or add `--lynis` to a live campaign to snapshot the host before and after the run, so a drop in the hardening
+index or a new finding is visible even if it isn't about the protocol under test (a crashed daemon that left a
+firewall rule disabled, for example):
+
+```bash
+python3 examples/run_live_campaign.py --config my_lab.yaml --confirm-lab --lynis --html live.html
+```
+
+The diff appears in the JSON report under `meta.lynis` and as a "Host audit (Lynis)" block in the console and
+HTML report. This is run from the CLI only; the web console stays free of host execution.
+
 ## Reproducing a case
 
 Every model is deterministic for a given seed, and every result carries its replay command:
@@ -110,4 +131,3 @@ python3 -m pytest tests
 3. Add protocol-specific models: BGP OPEN/UPDATE, OSPF Hello/LSA, IPv6 extension headers, TLS ClientHello, IKEv2 SA proposals.
 4. Store every anomalous case with exact bytes, seed, timing, and replay command.
 5. Add CI modes: smoke, nightly, and release fuzzing.
-# protocol_fuzzer

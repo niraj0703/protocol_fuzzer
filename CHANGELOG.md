@@ -2,6 +2,14 @@
 
 ## Unreleased
 
+### Added (third round)
+- `core/lynis.py`: wraps Lynis (https://cisofy.com/lynis/) to audit the lab host's security and hardening
+  posture. `audit()` runs and parses a Lynis report; `compare()` diffs two snapshots.
+- `examples/run_lynis_audit.py`: standalone host audit, independent of any fuzz campaign.
+- `run_live_campaign.py --lynis` / `--lynis-full`: audits the host before and after a live campaign and
+  records the diff in the report (`meta.lynis`). Printed to the console and shown in the UI's summary pane.
+- Tests against a stub `lynis` binary, including a missing-binary case, a report-less exit, and a timeout.
+
 ### Added (second round)
 - Live mode: `targets` in campaign files, `examples/run_live_campaign.py`, mandatory `--confirm-lab`, lab guard on every target.
 - Oracles: `no_unexpected_state_transition` and `no_resource_leak` (with `ResourceMonitor`, `CompositeMonitor`, `LeakDetector`).

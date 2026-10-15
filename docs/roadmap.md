@@ -32,6 +32,7 @@
 - Process status monitor (done)
 - Resource (memory, file descriptor) monitor (done)
 - systemd monitor
+- Host security audit via Lynis (done)
 - dmesg monitor
 - routing neighbor monitor
 - VPN tunnel monitor

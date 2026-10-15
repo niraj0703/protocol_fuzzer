@@ -289,7 +289,23 @@ function renderSummary(report) {
   return h('section', { class: 'pane summary', 'aria-label': 'Summary' },
     h('div', { class: 'bar-wrap' }, statusBar(byStatus, total, false)), legend,
     h('div', {}, h('h3', { text: 'What was mutated' }), cover),
-    notes.map((n) => h('p', { class: 'note', text: n })));
+    notes.map((n) => h('p', { class: 'note', text: n })),
+    lynisBlock(m.lynis));
+}
+
+function lynisBlock(lynis) {
+  if (!lynis || !lynis.diff) return null;
+  const d = lynis.diff, delta = d.hardening_index_delta;
+  const deltaTxt = delta == null ? '' : delta > 0 ? ` (+${delta})` : delta < 0 ? ` (${delta})` : ' (no change)';
+  const rows = [];
+  if (d.new_warnings.length) rows.push(h('li', {}, h('b', { text: `${d.new_warnings.length} new warning${d.new_warnings.length === 1 ? '' : 's'}: ` }),
+    d.new_warnings.map((w) => w.id || w.description).join(', ')));
+  if (d.resolved_warnings.length) rows.push(h('li', {}, `${d.resolved_warnings.length} warning${d.resolved_warnings.length === 1 ? '' : 's'} cleared since the baseline.`));
+  if (d.new_suggestions.length) rows.push(h('li', {}, `${d.new_suggestions.length} new suggestion${d.new_suggestions.length === 1 ? '' : 's'}.`));
+  if (!rows.length) rows.push(h('li', { class: 'muted', text: 'No new findings since the baseline audit.' }));
+  return h('div', {}, h('h3', { text: 'Host audit (Lynis)' }),
+    h('p', { text: `Hardening index: ${d.hardening_index_before ?? '?'} -> ${d.hardening_index_after ?? '?'}${deltaTxt}` }),
+    h('ul', { style: 'margin:4px 0 0;padding-left:20px;font-size:13px' }, rows));
 }
 
 /* ---------- results table ---------- */
