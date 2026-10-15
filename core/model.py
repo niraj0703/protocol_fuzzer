@@ -15,6 +15,13 @@ class ProtocolModel(ABC):
         self.seed = seed
         self.rng = random.Random(seed)
 
+    # True for protocols that stay silent on invalid input (WireGuard), so no reply is not a finding.
+    timeout_is_normal = False
+
+    def response_accepted(self, case: FuzzCase, responses: List[str]) -> bool:
+        """Did the target's reply (hex strings) show it accepted the message? Override per protocol."""
+        return False
+
     @abstractmethod
     def generate_cases(self, max_cases: int) -> Iterable[FuzzCase]:
         """Yield protocol-aware fuzz cases."""

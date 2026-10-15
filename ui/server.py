@@ -153,7 +153,7 @@ def make_handler(state, allowed_hosts):
             if not isinstance(seed, int) or isinstance(seed, bool) or not 0 <= seed < 2 ** 31:
                 return self._error(400, "seed must be an integer from 0 to 2147483647")
 
-            reporter = run_campaign(state.config, seed=seed, max_cases=cases, protocols=list(dict.fromkeys(protocols)))
+            reporter = run_campaign(dict(state.config, mode="dry-run"), seed=seed, max_cases=cases, protocols=list(dict.fromkeys(protocols)))
             report = reporter.to_dict()
             self._json(200, {**report, "id": state.add(report)})
 

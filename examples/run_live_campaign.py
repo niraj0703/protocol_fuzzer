@@ -12,6 +12,7 @@ from core.config import ConfigError, load_campaign
 from core.lab_guard import LabGuardError
 from core.lynis import LynisUnavailable, audit as lynis_audit, compare as lynis_compare
 from core.minimizer import minimize
+from ui.lynis_report import render_diff as lynis_render_diff
 from protocols.registry import PROTOCOLS
 
 MINIMIZABLE = {"CRASH_SUSPECT", "CONNECTION_RESET", "STATE_CONFUSION", "SECURITY_POLICY_BYPASS", "TIMEOUT"}
@@ -67,6 +68,10 @@ def main():
                   f"  new warnings: {len(diff['new_warnings'])}  new suggestions: {len(diff['new_suggestions'])}")
             for w in diff["new_warnings"]:
                 print(f"    [{w.get('id', '?')}] {w.get('description', '')}")
+            if args.html:
+                lynis_html = str(Path(args.html).with_name(Path(args.html).stem + "_lynis.html"))
+                Path(lynis_html).write_text(lynis_render_diff(lynis_before, lynis_after, diff), encoding="utf-8")
+                print(f"Wrote {lynis_html}")
         except LynisUnavailable as exc:
             print(f"Lynis after-audit skipped: {exc}")
 

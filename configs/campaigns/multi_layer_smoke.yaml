@@ -16,10 +16,13 @@ layers:
     enabled: true
     protocols:
       - bgp-like
+      - ospf-hello-like
   encryption_vpn:
     enabled: true
     protocols:
       - tls-clienthello-like
+      - ikev2-sa-init-like
+      - wireguard-initiation-like
 
 oracles:
   - no_crash

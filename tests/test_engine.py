@@ -41,11 +41,10 @@ def test_config_validation_errors():
         validate_campaign({"layers": {"packet": {"enabled": False, "protocols": ["generic-tlv"]}}})
 
 
-def test_unimplemented_oracles_are_reported():
-    reporter = run_campaign(load_campaign(CAMPAIGN), max_cases=1)
-    o = reporter.meta["oracles"]
-    assert o["active"] == ["no_crash", "no_timeout"]
-    assert o["unavailable"] == ["no_unexpected_state_transition", "no_resource_leak"]
+def test_all_four_oracles_are_active():
+    o = run_campaign(load_campaign(CAMPAIGN), max_cases=1).meta["oracles"]
+    assert o["active"] == ["no_crash", "no_timeout", "no_unexpected_state_transition", "no_resource_leak"]
+    assert o["unavailable"] == []
 
 
 def test_classifier():

@@ -12,6 +12,7 @@ from pathlib import Path
 sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
 
 from core.lynis import LynisUnavailable, audit
+from ui.lynis_report import render_single
 
 
 def main():
@@ -20,6 +21,7 @@ def main():
     parser.add_argument("--full", action="store_true", help="skip Lynis's --quick flag (slower, same checks)")
     parser.add_argument("--timeout", type=float, default=240.0)
     parser.add_argument("--binary", default="lynis")
+    parser.add_argument("--html", help="also write a readable, standalone HTML audit report to this path")
     args = parser.parse_args()
 
     try:
@@ -33,6 +35,10 @@ def main():
     print(f"Warnings: {len(report.get('warnings', []))}  Suggestions: {len(report.get('suggestions', []))}")
     for w in report.get("warnings", [])[:10]:
         print(f"  [{w.get('id', '?')}] {w.get('description', '')}")
+
+    if args.html:
+        Path(args.html).write_text(render_single(report), encoding="utf-8")
+        print(f"Wrote {args.html}")
 
 
 if __name__ == "__main__":

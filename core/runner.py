@@ -3,7 +3,7 @@ from datetime import datetime, timezone
 from typing import Callable, Iterable, Optional
 
 from .case import FuzzResult
-from .oracles import classify, classify_exception, IMPLEMENTED_ORACLES
+from .oracles import LeakDetector, classify, classify_exception, IMPLEMENTED_ORACLES
 
 
 def replay_command(protocol: str, seed: int, case_name: str) -> str:
@@ -30,6 +30,7 @@ class CampaignRunner:
         self.only = only
         self.on_result = on_result
         self._count = 0
+        self.leak = LeakDetector() if "no_resource_leak" in self.oracles else None
 
     def run(self, max_cases: int):
         seed = getattr(self.model, "seed", 0)
@@ -51,7 +52,13 @@ class CampaignRunner:
                 reasons = [f"transport raised {type(exc).__name__}"]
             after = self.monitor.after_case()
             if status is None:
-                status, reasons = classify(observation, before, after, self.oracles)
+                hexes = [r["hex"] for r in observation.get("responses", []) if "hex" in r]
+                status, reasons = classify(
+                    observation, before, after, self.oracles,
+                    accepted=bool(hexes) and self.model.response_accepted(case, hexes),
+                    must_reject=bool(case.expected.get("must_reject")), layer=case.layer,
+                    timeout_is_normal=getattr(self.model, "timeout_is_normal", False),
+                    leak=self.leak.check(after) if self.leak else None)
             duration_ms = (time.perf_counter() - t0) * 1000
 
             result = FuzzResult(

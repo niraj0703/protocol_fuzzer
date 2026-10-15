@@ -47,6 +47,7 @@ button, input, select { font: inherit; color: inherit; }
 .top .grow { flex: 1; }
 .mode { display: inline-flex; align-items: center; gap: 8px; font-size: 13px; }
 .mode::before { content: ""; width: 8px; height: 8px; border-radius: 50%; background: #2F8F5B; }
+.mode.live::before { background: #D9822B; }
 
 .btn { color: inherit; border: 1px solid var(--rule); background: var(--field); border-radius: var(--r); padding: 6px 12px; cursor: pointer; text-decoration: none; display: inline-block; }
 .btn:hover { border-color: var(--ink2); }
@@ -199,7 +200,8 @@ const STATUS_LABEL = { DRY_RUN: 'Dry run', OK: 'OK', TIMEOUT: 'Timeout', CONNECT
 const STATUS_ORDER = Object.keys(STATUS_LABEL);
 const LAYER_LABEL = { packet: 'Packet', network: 'Network', routing: 'Routing', encryption_vpn: 'Encryption and VPN' };
 const PROTO_LABEL = { 'generic-tlv': 'Generic TLV', 'ipv4-icmp': 'IPv4 and ICMP echo', 'bgp-like': 'BGP-like session',
-  'tls-clienthello-like': 'TLS ClientHello-like' };
+  'tls-clienthello-like': 'TLS ClientHello-like', 'ospf-hello-like': 'OSPF Hello', 'ikev2-sa-init-like': 'IKEv2 SA_INIT',
+  'wireguard-initiation-like': 'WireGuard initiation' };
 const PAGE = 300;
 const MAX_BYTES = 2048;
 
@@ -277,15 +279,33 @@ function renderSummary(report) {
 
   const oracles = m.oracles || {};
   const notes = [];
-  if (m.mode === 'dry-run' || results.every((r) => r.status === 'DRY_RUN'))
+  if (results.every((r) => r.status === 'DRY_RUN'))
     notes.push('Dry run: cases were generated and classified, but nothing reached a target, so no oracle verdicts exist yet. Fields listed above show what each mutation changed.');
+  Object.entries(m.targets || {}).forEach(([pid, url]) => notes.push(`${label(PROTO_LABEL, pid)} was sent to ${url}.`));
+  Object.entries(m.skipped || {}).forEach(([pid, why]) => notes.push(`${label(PROTO_LABEL, pid)} was skipped: ${why}.`));
   if ((oracles.unavailable || []).length)
     notes.push(`Requested but not implemented: ${oracles.unavailable.join(', ')}. Results are not checked against these.`);
 
   return h('section', { class: 'pane summary', 'aria-label': 'Summary' },
     h('div', { class: 'bar-wrap' }, statusBar(byStatus, total, false)), legend,
     h('div', {}, h('h3', { text: 'What was mutated' }), cover),
-    notes.map((n) => h('p', { class: 'note', text: n })));
+    notes.map((n) => h('p', { class: 'note', text: n })),
+    lynisBlock(m.lynis));
+}
+
+function lynisBlock(lynis) {
+  if (!lynis || !lynis.diff) return null;
+  const d = lynis.diff, delta = d.hardening_index_delta;
+  const deltaTxt = delta == null ? '' : delta > 0 ? ` (+${delta})` : delta < 0 ? ` (${delta})` : ' (no change)';
+  const rows = [];
+  if (d.new_warnings.length) rows.push(h('li', {}, h('b', { text: `${d.new_warnings.length} new warning${d.new_warnings.length === 1 ? '' : 's'}: ` }),
+    d.new_warnings.map((w) => w.id || w.description).join(', ')));
+  if (d.resolved_warnings.length) rows.push(h('li', {}, `${d.resolved_warnings.length} warning${d.resolved_warnings.length === 1 ? '' : 's'} cleared since the baseline.`));
+  if (d.new_suggestions.length) rows.push(h('li', {}, `${d.new_suggestions.length} new suggestion${d.new_suggestions.length === 1 ? '' : 's'}.`));
+  if (!rows.length) rows.push(h('li', { class: 'muted', text: 'No new findings since the baseline audit.' }));
+  return h('div', {}, h('h3', { text: 'Host audit (Lynis)' }),
+    h('p', { text: `Hardening index: ${d.hardening_index_before ?? '?'} -> ${d.hardening_index_after ?? '?'}${deltaTxt}` }),
+    h('ul', { style: 'margin:4px 0 0;padding-left:20px;font-size:13px' }, rows));
 }
 
 /* ---------- results table ---------- */
@@ -437,6 +457,15 @@ function renderDetail(r) {
   });
   if (!(r.payload_hex || []).length) box.append(h('p', { class: 'muted', text: 'Payload bytes were not saved in this report (report.save_payload_hex is off).' }));
 
+  const mz = r.observations && r.observations.minimized;
+  if (mz && !mz.reproducible) box.append(h('p', { class: 'muted', text: 'The minimizer could not reproduce this failure.' }));
+  if (mz && mz.reproducible) {
+    box.append(h('div', { class: 'step' },
+      h('div', { class: 'step-h' }, h('h3', { text: 'Minimized reproducer' }),
+        h('span', { class: 'muted num', text: `${mz.minimized_bytes} of ${mz.original_bytes} bytes, ${mz.tests} tests` }), h('span', { class: 'sp' }),
+        h('button', { class: 'btn small', onclick: (e) => copyText(mz.payload_hex.join(' '), e.currentTarget), text: 'Copy hex' })),
+      mz.payload_hex.map((hex) => inspector(hex, [], []))));
+  }
   const ex = (r.observations && r.observations.expected) || {};
   if (ex.allowed || ex.not_allowed) {
     box.append(h('dl', { class: 'kv' },
@@ -464,6 +493,9 @@ function showReport(report, runId) {
   state.filters = { q: '', layer: '', status: '' };
   const m = report.meta || {}, main = $('#main'); main.textContent = '';
   document.title = `${m.name || 'Report'} - Protocol fuzzer console`;
+  const live = m.mode === 'live';
+  $('#mode').className = 'mode' + (live ? ' live' : '');
+  $('#mode').textContent = live ? 'Live run: traffic was sent to lab targets' : 'Dry run: nothing is sent to any target';
   const acts = h('div', { class: 'acts' },
     runId && !EMBEDDED ? h('a', { class: 'btn', href: `/api/runs/${runId}/export`, text: 'Download HTML report' }) : null,
     h('button', { class: 'btn', onclick: downloadJson, text: 'Download JSON' }));

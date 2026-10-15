@@ -42,6 +42,14 @@ class BgpLikeModel(ProtocolModel):
     def _update(self):
         return self._msg(2, [("withdrawn_len", b"\x00\x00"), ("path_attr_len", b"\x00\x00")], label="UPDATE")
 
+    def response_accepted(self, case, responses) -> bool:
+        # Anything but a NOTIFICATION (type 3) means the session carried on.
+        for h in responses:
+            b = bytes.fromhex(h)
+            if len(b) >= 19 and b[:16] == self.MARKER and b[18] != 3:
+                return True
+        return False
+
     def generate_cases(self, max_cases: int) -> Iterable[FuzzCase]:
         # hold_time 0 is legal (no keepalives); 1 and 2 are not (RFC 4271 requires 0 or >= 3).
         sequences = [
@@ -65,5 +73,6 @@ class BgpLikeModel(ProtocolModel):
                 protocol="bgp-like",
                 payloads=[p.payload for p in packets],
                 metadata=metadata,
-                expected={"not_allowed": ["daemon_crash", "neighbor_stuck", "route_table_corruption"]},
+                expected={"not_allowed": ["daemon_crash", "neighbor_stuck", "route_table_corruption"],
+                          "must_reject": name not in ("valid_open_keepalive", "hold_time_zero_legal")},
             )

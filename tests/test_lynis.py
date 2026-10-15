@@ -137,3 +137,103 @@ targets:
     report = json.loads(out.read_text())
     assert report["meta"]["lynis"]["diff"]["hardening_index_before"] == 61
     assert "Running Lynis audit (baseline)" in result.stdout
+
+
+# ---- audit report rendering ----------------------------------------------------
+def test_render_single_has_no_script_and_shows_index():
+    from ui.lynis_report import render_single
+    html_out = render_single(parse_report(REPORT_BASELINE))
+    assert "<script" not in html_out
+    assert ">61<" in html_out and "SSH-7408" in html_out and "KRNL-5820" in html_out
+
+
+def test_render_diff_shows_delta_and_new_and_resolved():
+    from ui.lynis_report import render_diff
+    before, after = parse_report(REPORT_BASELINE), parse_report(REPORT_AFTER)
+    diff = compare(before, after)
+    html_out = render_diff(before, after, diff)
+    assert "<script" not in html_out
+    assert "FIRE-4590" in html_out and "AUTH-9328" in html_out
+    assert "-3" in html_out
+
+
+def test_render_escapes_untrusted_description():
+    from ui.lynis_report import render_single
+    report = {"hardening_index": 50, "warnings": [{"id": "X", "description": "<img src=x onerror=alert(1)>"}],
+              "suggestions": []}
+    html_out = render_single(report)
+    assert "<img" not in html_out and "&lt;img" in html_out
+
+
+def test_run_lynis_audit_script_writes_html(tmp_path):
+    import subprocess
+    import sys
+    script = _fake_lynis(tmp_path, REPORT_BASELINE)
+    out_json, out_html = tmp_path / "out.json", tmp_path / "out.html"
+    repo_root = Path(__file__).resolve().parents[1]
+    result = subprocess.run(
+        [sys.executable, str(repo_root / "examples" / "run_lynis_audit.py"),
+         "--binary", str(script), "--output", str(out_json), "--html", str(out_html)],
+        capture_output=True, text=True, timeout=10)
+    assert result.returncode == 0, result.stderr
+    assert out_json.exists() and out_html.exists()
+    assert "SSH-7408" in out_html.read_text()
+
+
+def test_live_campaign_writes_lynis_html_alongside_main_html(tmp_path):
+    import socket
+    import subprocess
+    import sys
+    import threading
+    import os
+
+    script = _fake_lynis(tmp_path, REPORT_BASELINE)
+    srv = socket.socket(); srv.bind(("127.0.0.1", 0)); srv.listen(1); port = srv.getsockname()[1]
+    threading.Thread(target=lambda: (srv.accept(), None), daemon=True).start()
+    cfg = tmp_path / "cfg.yaml"
+    cfg.write_text(f"""
+name: lynis_html_e2e
+mode: live
+max_cases: 1
+layers:
+  routing:
+    protocols: [bgp-like]
+targets:
+  bgp-like: {{host: 127.0.0.1, port: {port}, transport: tcp, timeout: 0.3}}
+""")
+    out_json, out_html = tmp_path / "out.json", tmp_path / "out.html"
+    repo_root = Path(__file__).resolve().parents[1]
+    result = subprocess.run(
+        [sys.executable, str(repo_root / "examples" / "run_live_campaign.py"),
+         "--config", str(cfg), "--confirm-lab", "--cases", "1", "--output", str(out_json),
+         "--html", str(out_html), "--lynis", "--lynis-full"],
+        capture_output=True, text=True, timeout=20,
+        env={**os.environ, "PATH": f"{tmp_path}:{os.environ.get('PATH', '')}"})
+    srv.close()
+    assert result.returncode == 0, result.stderr
+    lynis_html = out_html.with_name(out_html.stem + "_lynis.html")
+    assert lynis_html.exists() and "SSH-7408" in lynis_html.read_text()
+
+
+def test_dry_campaign_writes_lynis_html_alongside_main_html(tmp_path):
+    import subprocess
+    import sys
+    import os
+
+    script = _fake_lynis(tmp_path, REPORT_BASELINE)
+    out_json, out_html = tmp_path / "out.json", tmp_path / "out.html"
+    repo_root = Path(__file__).resolve().parents[1]
+    env = {**os.environ, "PATH": f"{tmp_path}:{os.environ.get('PATH', '')}"}
+    result = subprocess.run(
+        [sys.executable, str(repo_root / "examples" / "run_dry_campaign.py"),
+         "--cases", "3", "--output", str(out_json), "--html", str(out_html),
+         "--lynis", "--lynis-full"],
+        capture_output=True, text=True, timeout=20, env=env, cwd=str(repo_root))
+    assert result.returncode == 0, result.stderr
+    lynis_html = out_html.with_name(out_html.stem + "_lynis.html")
+    assert out_html.exists() and lynis_html.exists()
+    assert "SSH-7408" in lynis_html.read_text()
+    import json
+    report = json.loads(out_json.read_text())
+    assert report["meta"]["lynis"]["diff"]["hardening_index_before"] == 61
+    assert "Running Lynis audit (baseline)" in result.stdout

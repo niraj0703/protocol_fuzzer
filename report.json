@@ -1,0 +1,6988 @@
+{
+  "meta": {
+    "name": "multi_layer_smoke",
+    "mode": "dry-run",
+    "seed": 7,
+    "max_cases_per_protocol": 40,
+    "protocols": [
+      "generic-tlv",
+      "ipv4-icmp",
+      "bgp-like",
+      "tls-clienthello-like"
+    ],
+    "oracles": {
+      "requested": [
+        "no_crash",
+        "no_timeout",
+        "no_unexpected_state_transition",
+        "no_resource_leak"
+      ],
+      "active": [
+        "no_crash",
+        "no_timeout"
+      ],
+      "unavailable": [
+        "no_unexpected_state_transition",
+        "no_resource_leak"
+      ]
+    },
+    "save_payload_hex": true,
+    "generated_at": "2026-10-15T06:23:12+00:00",
+    "finished_at": "2026-10-15T06:23:12+00:00"
+  },
+  "summary": {
+    "total": 72,
+    "by_status": {
+      "DRY_RUN": 72
+    },
+    "by_layer": {
+      "packet": {
+        "DRY_RUN": 39
+      },
+      "network": {
+        "DRY_RUN": 16
+      },
+      "routing": {
+        "DRY_RUN": 9
+      },
+      "encryption_vpn": {
+        "DRY_RUN": 8
+      }
+    },
+    "by_protocol": {
+      "generic-tlv": {
+        "DRY_RUN": 39
+      },
+      "ipv4-icmp": {
+        "DRY_RUN": 16
+      },
+      "bgp-like": {
+        "DRY_RUN": 9
+      },
+      "tls-clienthello-like": {
+        "DRY_RUN": 8
+      }
+    }
+  },
+  "results": [
+    {
+      "case_name": "tlv_0_valid",
+      "layer": "packet",
+      "protocol": "generic-tlv",
+      "status": "DRY_RUN",
+      "observations": {
+        "metadata": {
+          "mutation": "valid",
+          "size": 6,
+          "layouts": [
+            [
+              {
+                "name": "version",
+                "start": 0,
+                "length": 1
+              },
+              {
+                "name": "msg_type",
+                "start": 1,
+                "length": 1
+              },
+              {
+                "name": "length",
+                "start": 2,
+                "length": 2
+              },
+              {
+                "name": "value",
+                "start": 4,
+                "length": 0
+              },
+              {
+                "name": "checksum",
+                "start": 4,
+                "length": 2
+              }
+            ]
+          ],
+          "mutated": [
+            []
+          ],
+          "labels": [
+            "TLV type 1"
+          ]
+        },
+        "expected": {
+          "allowed": [
+            "reject",
+            "ignore",
+            "well_formed_error"
+          ],
+          "not_allowed": [
+            "crash",
+            "hang"
+          ]
+        },
+        "transport": {
+          "sent": false,
+          "payload_count": 1,
+          "payload_sizes": [
+            6
+          ]
+        },
+        "monitor_before": {},
+        "monitor_after": {}
+      },
+      "payload_hex": [
+        "010100000002"
+      ],
+      "error": null,
+      "index": 0,
+      "seed": 7,
+      "started_at": "2026-10-15T06:23:12.835+00:00",
+      "duration_ms": 0.008,
+      "replay": "python3 examples/run_dry_campaign.py --protocol generic-tlv --seed 7 --cases 1000 --only tlv_0_valid",
+      "reasons": [
+        "nothing was sent"
+      ]
+    },
+    {
+      "case_name": "tlv_1_long_length",
+      "layer": "packet",
+      "protocol": "generic-tlv",
+      "status": "DRY_RUN",
+      "observations": {
+        "metadata": {
+          "mutation": "long_length",
+          "size": 6,
+          "layouts": [
+            [
+              {
+                "name": "version",
+                "start": 0,
+                "length": 1
+              },
+              {
+                "name": "msg_type",
+                "start": 1,
+                "length": 1
+              },
+              {
+                "name": "length",
+                "start": 2,
+                "length": 2
+              },
+              {
+                "name": "value",
+                "start": 4,
+                "length": 0
+              },
+              {
+                "name": "checksum",
+                "start": 4,
+                "length": 2
+              }
+            ]
+          ],
+          "mutated": [
+            [
+              "length"
+            ]
+          ],
+          "labels": [
+            "TLV type 1"
+          ]
+        },
+        "expected": {
+          "allowed": [
+            "reject",
+            "ignore",
+            "well_formed_error"
+          ],
+          "not_allowed": [
+            "crash",
+            "hang"
+          ]
+        },
+        "transport": {
+          "sent": false,
+          "payload_count": 1,
+          "payload_sizes": [
+            6
+          ]
+        },
+        "monitor_before": {},
+        "monitor_after": {}
+      },
+      "payload_hex": [
+        "010100640066"
+      ],
+      "error": null,
+      "index": 1,
+      "seed": 7,
+      "started_at": "2026-10-15T06:23:12.835+00:00",
+      "duration_ms": 0.003,
+      "replay": "python3 examples/run_dry_campaign.py --protocol generic-tlv --seed 7 --cases 1000 --only tlv_1_long_length",
+      "reasons": [
+        "nothing was sent"
+      ]
+    },
+    {
+      "case_name": "tlv_2_bad_checksum",
+      "layer": "packet",
+      "protocol": "generic-tlv",
+      "status": "DRY_RUN",
+      "observations": {
+        "metadata": {
+          "mutation": "bad_checksum",
+          "size": 6,
+          "layouts": [
+            [
+              {
+                "name": "version",
+                "start": 0,
+                "length": 1
+              },
+              {
+                "name": "msg_type",
+                "start": 1,
+                "length": 1
+              },
+              {
+                "name": "length",
+                "start": 2,
+                "length": 2
+              },
+              {
+                "name": "value",
+                "start": 4,
+                "length": 0
+              },
+              {
+                "name": "checksum",
+                "start": 4,
+                "length": 2
+              }
+            ]
+          ],
+          "mutated": [
+            [
+              "checksum"
+            ]
+          ],
+          "labels": [
+            "TLV type 1"
+          ]
+        },
+        "expected": {
+          "allowed": [
+            "reject",
+            "ignore",
+            "well_formed_error"
+          ],
+          "not_allowed": [
+            "crash",
+            "hang"
+          ]
+        },
+        "transport": {
+          "sent": false,
+          "payload_count": 1,
+          "payload_sizes": [
+            6
+          ]
+        },
+        "monitor_before": {},
+        "monitor_after": {}
+      },
+      "payload_hex": [
+        "01010000dead"
+      ],
+      "error": null,
+      "index": 2,
+      "seed": 7,
+      "started_at": "2026-10-15T06:23:12.835+00:00",
+      "duration_ms": 0.002,
+      "replay": "python3 examples/run_dry_campaign.py --protocol generic-tlv --seed 7 --cases 1000 --only tlv_2_bad_checksum",
+      "reasons": [
+        "nothing was sent"
+      ]
+    },
+    {
+      "case_name": "tlv_3_unknown_type",
+      "layer": "packet",
+      "protocol": "generic-tlv",
+      "status": "DRY_RUN",
+      "observations": {
+        "metadata": {
+          "mutation": "unknown_type",
+          "size": 6,
+          "layouts": [
+            [
+              {
+                "name": "version",
+                "start": 0,
+                "length": 1
+              },
+              {
+                "name": "msg_type",
+                "start": 1,
+                "length": 1
+              },
+              {
+                "name": "length",
+                "start": 2,
+                "length": 2
+              },
+              {
+                "name": "value",
+                "start": 4,
+                "length": 0
+              },
+              {
+                "name": "checksum",
+                "start": 4,
+                "length": 2
+              }
+            ]
+          ],
+          "mutated": [
+            [
+              "msg_type"
+            ]
+          ],
+          "labels": [
+            "TLV type 255"
+          ]
+        },
+        "expected": {
+          "allowed": [
+            "reject",
+            "ignore",
+            "well_formed_error"
+          ],
+          "not_allowed": [
+            "crash",
+            "hang"
+          ]
+        },
+        "transport": {
+          "sent": false,
+          "payload_count": 1,
+          "payload_sizes": [
+            6
+          ]
+        },
+        "monitor_before": {},
+        "monitor_after": {}
+      },
+      "payload_hex": [
+        "01ff00000100"
+      ],
+      "error": null,
+      "index": 3,
+      "seed": 7,
+      "started_at": "2026-10-15T06:23:12.836+00:00",
+      "duration_ms": 0.002,
+      "replay": "python3 examples/run_dry_campaign.py --protocol generic-tlv --seed 7 --cases 1000 --only tlv_3_unknown_type",
+      "reasons": [
+        "nothing was sent"
+      ]
+    },
+    {
+      "case_name": "tlv_4_invalid_version",
+      "layer": "packet",
+      "protocol": "generic-tlv",
+      "status": "DRY_RUN",
+      "observations": {
+        "metadata": {
+          "mutation": "invalid_version",
+          "size": 6,
+          "layouts": [
+            [
+              {
+                "name": "version",
+                "start": 0,
+                "length": 1
+              },
+              {
+                "name": "msg_type",
+                "start": 1,
+                "length": 1
+              },
+              {
+                "name": "length",
+                "start": 2,
+                "length": 2
+              },
+              {
+                "name": "value",
+                "start": 4,
+                "length": 0
+              },
+              {
+                "name": "checksum",
+                "start": 4,
+                "length": 2
+              }
+            ]
+          ],
+          "mutated": [
+            [
+              "version"
+            ]
+          ],
+          "labels": [
+            "TLV type 1"
+          ]
+        },
+        "expected": {
+          "allowed": [
+            "reject",
+            "ignore",
+            "well_formed_error"
+          ],
+          "not_allowed": [
+            "crash",
+            "hang"
+          ]
+        },
+        "transport": {
+          "sent": false,
+          "payload_count": 1,
+          "payload_sizes": [
+            6
+          ]
+        },
+        "monitor_before": {},
+        "monitor_after": {}
+      },
+      "payload_hex": [
+        "ff0100000100"
+      ],
+      "error": null,
+      "index": 4,
+      "seed": 7,
+      "started_at": "2026-10-15T06:23:12.836+00:00",
+      "duration_ms": 0.002,
+      "replay": "python3 examples/run_dry_campaign.py --protocol generic-tlv --seed 7 --cases 1000 --only tlv_4_invalid_version",
+      "reasons": [
+        "nothing was sent"
+      ]
+    },
+    {
+      "case_name": "tlv_5_valid",
+      "layer": "packet",
+      "protocol": "generic-tlv",
+      "status": "DRY_RUN",
+      "observations": {
+        "metadata": {
+          "mutation": "valid",
+          "size": 7,
+          "layouts": [
+            [
+              {
+                "name": "version",
+                "start": 0,
+                "length": 1
+              },
+              {
+                "name": "msg_type",
+                "start": 1,
+                "length": 1
+              },
+              {
+                "name": "length",
+                "start": 2,
+                "length": 2
+              },
+              {
+                "name": "value",
+                "start": 4,
+                "length": 1
+              },
+              {
+                "name": "checksum",
+                "start": 5,
+                "length": 2
+              }
+            ]
+          ],
+          "mutated": [
+            []
+          ],
+          "labels": [
+            "TLV type 1"
+          ]
+        },
+        "expected": {
+          "allowed": [
+            "reject",
+            "ignore",
+            "well_formed_error"
+          ],
+          "not_allowed": [
+            "crash",
+            "hang"
+          ]
+        },
+        "transport": {
+          "sent": false,
+          "payload_count": 1,
+          "payload_sizes": [
+            7
+          ]
+        },
+        "monitor_before": {},
+        "monitor_after": {}
+      },
+      "payload_hex": [
+        "01010001410044"
+      ],
+      "error": null,
+      "index": 5,
+      "seed": 7,
+      "started_at": "2026-10-15T06:23:12.836+00:00",
+      "duration_ms": 0.002,
+      "replay": "python3 examples/run_dry_campaign.py --protocol generic-tlv --seed 7 --cases 1000 --only tlv_5_valid",
+      "reasons": [
+        "nothing was sent"
+      ]
+    },
+    {
+      "case_name": "tlv_6_zero_length_with_value",
+      "layer": "packet",
+      "protocol": "generic-tlv",
+      "status": "DRY_RUN",
+      "observations": {
+        "metadata": {
+          "mutation": "zero_length_with_value",
+          "size": 7,
+          "layouts": [
+            [
+              {
+                "name": "version",
+                "start": 0,
+                "length": 1
+              },
+              {
+                "name": "msg_type",
+                "start": 1,
+                "length": 1
+              },
+              {
+                "name": "length",
+                "start": 2,
+                "length": 2
+              },
+              {
+                "name": "value",
+                "start": 4,
+                "length": 1
+              },
+              {
+                "name": "checksum",
+                "start": 5,
+                "length": 2
+              }
+            ]
+          ],
+          "mutated": [
+            [
+              "length"
+            ]
+          ],
+          "labels": [
+            "TLV type 1"
+          ]
+        },
+        "expected": {
+          "allowed": [
+            "reject",
+            "ignore",
+            "well_formed_error"
+          ],
+          "not_allowed": [
+            "crash",
+            "hang"
+          ]
+        },
+        "transport": {
+          "sent": false,
+          "payload_count": 1,
+          "payload_sizes": [
+            7
+          ]
+        },
+        "monitor_before": {},
+        "monitor_after": {}
+      },
+      "payload_hex": [
+        "01010000410043"
+      ],
+      "error": null,
+      "index": 6,
+      "seed": 7,
+      "started_at": "2026-10-15T06:23:12.836+00:00",
+      "duration_ms": 0.001,
+      "replay": "python3 examples/run_dry_campaign.py --protocol generic-tlv --seed 7 --cases 1000 --only tlv_6_zero_length_with_value",
+      "reasons": [
+        "nothing was sent"
+      ]
+    },
+    {
+      "case_name": "tlv_7_long_length",
+      "layer": "packet",
+      "protocol": "generic-tlv",
+      "status": "DRY_RUN",
+      "observations": {
+        "metadata": {
+          "mutation": "long_length",
+          "size": 7,
+          "layouts": [
+            [
+              {
+                "name": "version",
+                "start": 0,
+                "length": 1
+              },
+              {
+                "name": "msg_type",
+                "start": 1,
+                "length": 1
+              },
+              {
+                "name": "length",
+                "start": 2,
+                "length": 2
+              },
+              {
+                "name": "value",
+                "start": 4,
+                "length": 1
+              },
+              {
+                "name": "checksum",
+                "start": 5,
+                "length": 2
+              }
+            ]
+          ],
+          "mutated": [
+            [
+              "length"
+            ]
+          ],
+          "labels": [
+            "TLV type 1"
+          ]
+        },
+        "expected": {
+          "allowed": [
+            "reject",
+            "ignore",
+            "well_formed_error"
+          ],
+          "not_allowed": [
+            "crash",
+            "hang"
+          ]
+        },
+        "transport": {
+          "sent": false,
+          "payload_count": 1,
+          "payload_sizes": [
+            7
+          ]
+        },
+        "monitor_before": {},
+        "monitor_after": {}
+      },
+      "payload_hex": [
+        "010100654100a8"
+      ],
+      "error": null,
+      "index": 7,
+      "seed": 7,
+      "started_at": "2026-10-15T06:23:12.836+00:00",
+      "duration_ms": 0.001,
+      "replay": "python3 examples/run_dry_campaign.py --protocol generic-tlv --seed 7 --cases 1000 --only tlv_7_long_length",
+      "reasons": [
+        "nothing was sent"
+      ]
+    },
+    {
+      "case_name": "tlv_8_bad_checksum",
+      "layer": "packet",
+      "protocol": "generic-tlv",
+      "status": "DRY_RUN",
+      "observations": {
+        "metadata": {
+          "mutation": "bad_checksum",
+          "size": 7,
+          "layouts": [
+            [
+              {
+                "name": "version",
+                "start": 0,
+                "length": 1
+              },
+              {
+                "name": "msg_type",
+                "start": 1,
+                "length": 1
+              },
+              {
+                "name": "length",
+                "start": 2,
+                "length": 2
+              },
+              {
+                "name": "value",
+                "start": 4,
+                "length": 1
+              },
+              {
+                "name": "checksum",
+                "start": 5,
+                "length": 2
+              }
+            ]
+          ],
+          "mutated": [
+            [
+              "checksum"
+            ]
+          ],
+          "labels": [
+            "TLV type 1"
+          ]
+        },
+        "expected": {
+          "allowed": [
+            "reject",
+            "ignore",
+            "well_formed_error"
+          ],
+          "not_allowed": [
+            "crash",
+            "hang"
+          ]
+        },
+        "transport": {
+          "sent": false,
+          "payload_count": 1,
+          "payload_sizes": [
+            7
+          ]
+        },
+        "monitor_before": {},
+        "monitor_after": {}
+      },
+      "payload_hex": [
+        "0101000141dead"
+      ],
+      "error": null,
+      "index": 8,
+      "seed": 7,
+      "started_at": "2026-10-15T06:23:12.836+00:00",
+      "duration_ms": 0.001,
+      "replay": "python3 examples/run_dry_campaign.py --protocol generic-tlv --seed 7 --cases 1000 --only tlv_8_bad_checksum",
+      "reasons": [
+        "nothing was sent"
+      ]
+    },
+    {
+      "case_name": "tlv_9_unknown_type",
+      "layer": "packet",
+      "protocol": "generic-tlv",
+      "status": "DRY_RUN",
+      "observations": {
+        "metadata": {
+          "mutation": "unknown_type",
+          "size": 7,
+          "layouts": [
+            [
+              {
+                "name": "version",
+                "start": 0,
+                "length": 1
+              },
+              {
+                "name": "msg_type",
+                "start": 1,
+                "length": 1
+              },
+              {
+                "name": "length",
+                "start": 2,
+                "length": 2
+              },
+              {
+                "name": "value",
+                "start": 4,
+                "length": 1
+              },
+              {
+                "name": "checksum",
+                "start": 5,
+                "length": 2
+              }
+            ]
+          ],
+          "mutated": [
+            [
+              "msg_type"
+            ]
+          ],
+          "labels": [
+            "TLV type 255"
+          ]
+        },
+        "expected": {
+          "allowed": [
+            "reject",
+            "ignore",
+            "well_formed_error"
+          ],
+          "not_allowed": [
+            "crash",
+            "hang"
+          ]
+        },
+        "transport": {
+          "sent": false,
+          "payload_count": 1,
+          "payload_sizes": [
+            7
+          ]
+        },
+        "monitor_before": {},
+        "monitor_after": {}
+      },
+      "payload_hex": [
+        "01ff0001410142"
+      ],
+      "error": null,
+      "index": 9,
+      "seed": 7,
+      "started_at": "2026-10-15T06:23:12.836+00:00",
+      "duration_ms": 0.001,
+      "replay": "python3 examples/run_dry_campaign.py --protocol generic-tlv --seed 7 --cases 1000 --only tlv_9_unknown_type",
+      "reasons": [
+        "nothing was sent"
+      ]
+    },
+    {
+      "case_name": "tlv_10_invalid_version",
+      "layer": "packet",
+      "protocol": "generic-tlv",
+      "status": "DRY_RUN",
+      "observations": {
+        "metadata": {
+          "mutation": "invalid_version",
+          "size": 7,
+          "layouts": [
+            [
+              {
+                "name": "version",
+                "start": 0,
+                "length": 1
+              },
+              {
+                "name": "msg_type",
+                "start": 1,
+                "length": 1
+              },
+              {
+                "name": "length",
+                "start": 2,
+                "length": 2
+              },
+              {
+                "name": "value",
+                "start": 4,
+                "length": 1
+              },
+              {
+                "name": "checksum",
+                "start": 5,
+                "length": 2
+              }
+            ]
+          ],
+          "mutated": [
+            [
+              "version"
+            ]
+          ],
+          "labels": [
+            "TLV type 1"
+          ]
+        },
+        "expected": {
+          "allowed": [
+            "reject",
+            "ignore",
+            "well_formed_error"
+          ],
+          "not_allowed": [
+            "crash",
+            "hang"
+          ]
+        },
+        "transport": {
+          "sent": false,
+          "payload_count": 1,
+          "payload_sizes": [
+            7
+          ]
+        },
+        "monitor_before": {},
+        "monitor_after": {}
+      },
+      "payload_hex": [
+        "ff010001410142"
+      ],
+      "error": null,
+      "index": 10,
+      "seed": 7,
+      "started_at": "2026-10-15T06:23:12.836+00:00",
+      "duration_ms": 0.001,
+      "replay": "python3 examples/run_dry_campaign.py --protocol generic-tlv --seed 7 --cases 1000 --only tlv_10_invalid_version",
+      "reasons": [
+        "nothing was sent"
+      ]
+    },
+    {
+      "case_name": "tlv_11_valid",
+      "layer": "packet",
+      "protocol": "generic-tlv",
+      "status": "DRY_RUN",
+      "observations": {
+        "metadata": {
+          "mutation": "valid",
+          "size": 12,
+          "layouts": [
+            [
+              {
+                "name": "version",
+                "start": 0,
+                "length": 1
+              },
+              {
+                "name": "msg_type",
+                "start": 1,
+                "length": 1
+              },
+              {
+                "name": "length",
+                "start": 2,
+                "length": 2
+              },
+              {
+                "name": "value",
+                "start": 4,
+                "length": 6
+              },
+              {
+                "name": "checksum",
+                "start": 10,
+                "length": 2
+              }
+            ]
+          ],
+          "mutated": [
+            []
+          ],
+          "labels": [
+            "TLV type 1"
+          ]
+        },
+        "expected": {
+          "allowed": [
+            "reject",
+            "ignore",
+            "well_formed_error"
+          ],
+          "not_allowed": [
+            "crash",
+            "hang"
+          ]
+        },
+        "transport": {
+          "sent": false,
+          "payload_count": 1,
+          "payload_sizes": [
+            12
+          ]
+        },
+        "monitor_before": {},
+        "monitor_after": {}
+      },
+      "payload_hex": [
+        "010100066e6f726d616c0291"
+      ],
+      "error": null,
+      "index": 11,
+      "seed": 7,
+      "started_at": "2026-10-15T06:23:12.836+00:00",
+      "duration_ms": 0.002,
+      "replay": "python3 examples/run_dry_campaign.py --protocol generic-tlv --seed 7 --cases 1000 --only tlv_11_valid",
+      "reasons": [
+        "nothing was sent"
+      ]
+    },
+    {
+      "case_name": "tlv_12_zero_length_with_value",
+      "layer": "packet",
+      "protocol": "generic-tlv",
+      "status": "DRY_RUN",
+      "observations": {
+        "metadata": {
+          "mutation": "zero_length_with_value",
+          "size": 12,
+          "layouts": [
+            [
+              {
+                "name": "version",
+                "start": 0,
+                "length": 1
+              },
+              {
+                "name": "msg_type",
+                "start": 1,
+                "length": 1
+              },
+              {
+                "name": "length",
+                "start": 2,
+                "length": 2
+              },
+              {
+                "name": "value",
+                "start": 4,
+                "length": 6
+              },
+              {
+                "name": "checksum",
+                "start": 10,
+                "length": 2
+              }
+            ]
+          ],
+          "mutated": [
+            [
+              "length"
+            ]
+          ],
+          "labels": [
+            "TLV type 1"
+          ]
+        },
+        "expected": {
+          "allowed": [
+            "reject",
+            "ignore",
+            "well_formed_error"
+          ],
+          "not_allowed": [
+            "crash",
+            "hang"
+          ]
+        },
+        "transport": {
+          "sent": false,
+          "payload_count": 1,
+          "payload_sizes": [
+            12
+          ]
+        },
+        "monitor_before": {},
+        "monitor_after": {}
+      },
+      "payload_hex": [
+        "010100006e6f726d616c028b"
+      ],
+      "error": null,
+      "index": 12,
+      "seed": 7,
+      "started_at": "2026-10-15T06:23:12.836+00:00",
+      "duration_ms": 0.001,
+      "replay": "python3 examples/run_dry_campaign.py --protocol generic-tlv --seed 7 --cases 1000 --only tlv_12_zero_length_with_value",
+      "reasons": [
+        "nothing was sent"
+      ]
+    },
+    {
+      "case_name": "tlv_13_short_length",
+      "layer": "packet",
+      "protocol": "generic-tlv",
+      "status": "DRY_RUN",
+      "observations": {
+        "metadata": {
+          "mutation": "short_length",
+          "size": 12,
+          "layouts": [
+            [
+              {
+                "name": "version",
+                "start": 0,
+                "length": 1
+              },
+              {
+                "name": "msg_type",
+                "start": 1,
+                "length": 1
+              },
+              {
+                "name": "length",
+                "start": 2,
+                "length": 2
+              },
+              {
+                "name": "value",
+                "start": 4,
+                "length": 6
+              },
+              {
+                "name": "checksum",
+                "start": 10,
+                "length": 2
+              }
+            ]
+          ],
+          "mutated": [
+            [
+              "length"
+            ]
+          ],
+          "labels": [
+            "TLV type 1"
+          ]
+        },
+        "expected": {
+          "allowed": [
+            "reject",
+            "ignore",
+            "well_formed_error"
+          ],
+          "not_allowed": [
+            "crash",
+            "hang"
+          ]
+        },
+        "transport": {
+          "sent": false,
+          "payload_count": 1,
+          "payload_sizes": [
+            12
+          ]
+        },
+        "monitor_before": {},
+        "monitor_after": {}
+      },
+      "payload_hex": [
+        "010100056e6f726d616c0290"
+      ],
+      "error": null,
+      "index": 13,
+      "seed": 7,
+      "started_at": "2026-10-15T06:23:12.836+00:00",
+      "duration_ms": 0.001,
+      "replay": "python3 examples/run_dry_campaign.py --protocol generic-tlv --seed 7 --cases 1000 --only tlv_13_short_length",
+      "reasons": [
+        "nothing was sent"
+      ]
+    },
+    {
+      "case_name": "tlv_14_long_length",
+      "layer": "packet",
+      "protocol": "generic-tlv",
+      "status": "DRY_RUN",
+      "observations": {
+        "metadata": {
+          "mutation": "long_length",
+          "size": 12,
+          "layouts": [
+            [
+              {
+                "name": "version",
+                "start": 0,
+                "length": 1
+              },
+              {
+                "name": "msg_type",
+                "start": 1,
+                "length": 1
+              },
+              {
+                "name": "length",
+                "start": 2,
+                "length": 2
+              },
+              {
+                "name": "value",
+                "start": 4,
+                "length": 6
+              },
+              {
+                "name": "checksum",
+                "start": 10,
+                "length": 2
+              }
+            ]
+          ],
+          "mutated": [
+            [
+              "length"
+            ]
+          ],
+          "labels": [
+            "TLV type 1"
+          ]
+        },
+        "expected": {
+          "allowed": [
+            "reject",
+            "ignore",
+            "well_formed_error"
+          ],
+          "not_allowed": [
+            "crash",
+            "hang"
+          ]
+        },
+        "transport": {
+          "sent": false,
+          "payload_count": 1,
+          "payload_sizes": [
+            12
+          ]
+        },
+        "monitor_before": {},
+        "monitor_after": {}
+      },
+      "payload_hex": [
+        "0101006a6e6f726d616c02f5"
+      ],
+      "error": null,
+      "index": 14,
+      "seed": 7,
+      "started_at": "2026-10-15T06:23:12.836+00:00",
+      "duration_ms": 0.001,
+      "replay": "python3 examples/run_dry_campaign.py --protocol generic-tlv --seed 7 --cases 1000 --only tlv_14_long_length",
+      "reasons": [
+        "nothing was sent"
+      ]
+    },
+    {
+      "case_name": "tlv_15_bad_checksum",
+      "layer": "packet",
+      "protocol": "generic-tlv",
+      "status": "DRY_RUN",
+      "observations": {
+        "metadata": {
+          "mutation": "bad_checksum",
+          "size": 12,
+          "layouts": [
+            [
+              {
+                "name": "version",
+                "start": 0,
+                "length": 1
+              },
+              {
+                "name": "msg_type",
+                "start": 1,
+                "length": 1
+              },
+              {
+                "name": "length",
+                "start": 2,
+                "length": 2
+              },
+              {
+                "name": "value",
+                "start": 4,
+                "length": 6
+              },
+              {
+                "name": "checksum",
+                "start": 10,
+                "length": 2
+              }
+            ]
+          ],
+          "mutated": [
+            [
+              "checksum"
+            ]
+          ],
+          "labels": [
+            "TLV type 1"
+          ]
+        },
+        "expected": {
+          "allowed": [
+            "reject",
+            "ignore",
+            "well_formed_error"
+          ],
+          "not_allowed": [
+            "crash",
+            "hang"
+          ]
+        },
+        "transport": {
+          "sent": false,
+          "payload_count": 1,
+          "payload_sizes": [
+            12
+          ]
+        },
+        "monitor_before": {},
+        "monitor_after": {}
+      },
+      "payload_hex": [
+        "010100066e6f726d616cdead"
+      ],
+      "error": null,
+      "index": 15,
+      "seed": 7,
+      "started_at": "2026-10-15T06:23:12.836+00:00",
+      "duration_ms": 0.001,
+      "replay": "python3 examples/run_dry_campaign.py --protocol generic-tlv --seed 7 --cases 1000 --only tlv_15_bad_checksum",
+      "reasons": [
+        "nothing was sent"
+      ]
+    },
+    {
+      "case_name": "tlv_16_unknown_type",
+      "layer": "packet",
+      "protocol": "generic-tlv",
+      "status": "DRY_RUN",
+      "observations": {
+        "metadata": {
+          "mutation": "unknown_type",
+          "size": 12,
+          "layouts": [
+            [
+              {
+                "name": "version",
+                "start": 0,
+                "length": 1
+              },
+              {
+                "name": "msg_type",
+                "start": 1,
+                "length": 1
+              },
+              {
+                "name": "length",
+                "start": 2,
+                "length": 2
+              },
+              {
+                "name": "value",
+                "start": 4,
+                "length": 6
+              },
+              {
+                "name": "checksum",
+                "start": 10,
+                "length": 2
+              }
+            ]
+          ],
+          "mutated": [
+            [
+              "msg_type"
+            ]
+          ],
+          "labels": [
+            "TLV type 255"
+          ]
+        },
+        "expected": {
+          "allowed": [
+            "reject",
+            "ignore",
+            "well_formed_error"
+          ],
+          "not_allowed": [
+            "crash",
+            "hang"
+          ]
+        },
+        "transport": {
+          "sent": false,
+          "payload_count": 1,
+          "payload_sizes": [
+            12
+          ]
+        },
+        "monitor_before": {},
+        "monitor_after": {}
+      },
+      "payload_hex": [
+        "01ff00066e6f726d616c038f"
+      ],
+      "error": null,
+      "index": 16,
+      "seed": 7,
+      "started_at": "2026-10-15T06:23:12.836+00:00",
+      "duration_ms": 0.001,
+      "replay": "python3 examples/run_dry_campaign.py --protocol generic-tlv --seed 7 --cases 1000 --only tlv_16_unknown_type",
+      "reasons": [
+        "nothing was sent"
+      ]
+    },
+    {
+      "case_name": "tlv_17_invalid_version",
+      "layer": "packet",
+      "protocol": "generic-tlv",
+      "status": "DRY_RUN",
+      "observations": {
+        "metadata": {
+          "mutation": "invalid_version",
+          "size": 12,
+          "layouts": [
+            [
+              {
+                "name": "version",
+                "start": 0,
+                "length": 1
+              },
+              {
+                "name": "msg_type",
+                "start": 1,
+                "length": 1
+              },
+              {
+                "name": "length",
+                "start": 2,
+                "length": 2
+              },
+              {
+                "name": "value",
+                "start": 4,
+                "length": 6
+              },
+              {
+                "name": "checksum",
+                "start": 10,
+                "length": 2
+              }
+            ]
+          ],
+          "mutated": [
+            [
+              "version"
+            ]
+          ],
+          "labels": [
+            "TLV type 1"
+          ]
+        },
+        "expected": {
+          "allowed": [
+            "reject",
+            "ignore",
+            "well_formed_error"
+          ],
+          "not_allowed": [
+            "crash",
+            "hang"
+          ]
+        },
+        "transport": {
+          "sent": false,
+          "payload_count": 1,
+          "payload_sizes": [
+            12
+          ]
+        },
+        "monitor_before": {},
+        "monitor_after": {}
+      },
+      "payload_hex": [
+        "ff0100066e6f726d616c038f"
+      ],
+      "error": null,
+      "index": 17,
+      "seed": 7,
+      "started_at": "2026-10-15T06:23:12.836+00:00",
+      "duration_ms": 0.001,
+      "replay": "python3 examples/run_dry_campaign.py --protocol generic-tlv --seed 7 --cases 1000 --only tlv_17_invalid_version",
+      "reasons": [
+        "nothing was sent"
+      ]
+    },
+    {
+      "case_name": "tlv_18_valid",
+      "layer": "packet",
+      "protocol": "generic-tlv",
+      "status": "DRY_RUN",
+      "observations": {
+        "metadata": {
+          "mutation": "valid",
+          "size": 70,
+          "layouts": [
+            [
+              {
+                "name": "version",
+                "start": 0,
+                "length": 1
+              },
+              {
+                "name": "msg_type",
+                "start": 1,
+                "length": 1
+              },
+              {
+                "name": "length",
+                "start": 2,
+                "length": 2
+              },
+              {
+                "name": "value",
+                "start": 4,
+                "length": 64
+              },
+              {
+                "name": "checksum",
+                "start": 68,
+                "length": 2
+              }
+            ]
+          ],
+          "mutated": [
+            []
+          ],
+          "labels": [
+            "TLV type 1"
+          ]
+        },
+        "expected": {
+          "allowed": [
+            "reject",
+            "ignore",
+            "well_formed_error"
+          ],
+          "not_allowed": [
+            "crash",
+            "hang"
+          ]
+        },
+        "transport": {
+          "sent": false,
+          "payload_count": 1,
+          "payload_sizes": [
+            70
+          ]
+        },
+        "monitor_before": {},
+        "monitor_after": {}
+      },
+      "payload_hex": [
+        "01010040585858585858585858585858585858585858585858585858585858585858585858585858585858585858585858585858585858585858585858585858585858581642"
+      ],
+      "error": null,
+      "index": 18,
+      "seed": 7,
+      "started_at": "2026-10-15T06:23:12.836+00:00",
+      "duration_ms": 0.001,
+      "replay": "python3 examples/run_dry_campaign.py --protocol generic-tlv --seed 7 --cases 1000 --only tlv_18_valid",
+      "reasons": [
+        "nothing was sent"
+      ]
+    },
+    {
+      "case_name": "tlv_19_zero_length_with_value",
+      "layer": "packet",
+      "protocol": "generic-tlv",
+      "status": "DRY_RUN",
+      "observations": {
+        "metadata": {
+          "mutation": "zero_length_with_value",
+          "size": 70,
+          "layouts": [
+            [
+              {
+                "name": "version",
+                "start": 0,
+                "length": 1
+              },
+              {
+                "name": "msg_type",
+                "start": 1,
+                "length": 1
+              },
+              {
+                "name": "length",
+                "start": 2,
+                "length": 2
+              },
+              {
+                "name": "value",
+                "start": 4,
+                "length": 64
+              },
+              {
+                "name": "checksum",
+                "start": 68,
+                "length": 2
+              }
+            ]
+          ],
+          "mutated": [
+            [
+              "length"
+            ]
+          ],
+          "labels": [
+            "TLV type 1"
+          ]
+        },
+        "expected": {
+          "allowed": [
+            "reject",
+            "ignore",
+            "well_formed_error"
+          ],
+          "not_allowed": [
+            "crash",
+            "hang"
+          ]
+        },
+        "transport": {
+          "sent": false,
+          "payload_count": 1,
+          "payload_sizes": [
+            70
+          ]
+        },
+        "monitor_before": {},
+        "monitor_after": {}
+      },
+      "payload_hex": [
+        "01010000585858585858585858585858585858585858585858585858585858585858585858585858585858585858585858585858585858585858585858585858585858581602"
+      ],
+      "error": null,
+      "index": 19,
+      "seed": 7,
+      "started_at": "2026-10-15T06:23:12.836+00:00",
+      "duration_ms": 0.001,
+      "replay": "python3 examples/run_dry_campaign.py --protocol generic-tlv --seed 7 --cases 1000 --only tlv_19_zero_length_with_value",
+      "reasons": [
+        "nothing was sent"
+      ]
+    },
+    {
+      "case_name": "tlv_20_short_length",
+      "layer": "packet",
+      "protocol": "generic-tlv",
+      "status": "DRY_RUN",
+      "observations": {
+        "metadata": {
+          "mutation": "short_length",
+          "size": 70,
+          "layouts": [
+            [
+              {
+                "name": "version",
+                "start": 0,
+                "length": 1
+              },
+              {
+                "name": "msg_type",
+                "start": 1,
+                "length": 1
+              },
+              {
+                "name": "length",
+                "start": 2,
+                "length": 2
+              },
+              {
+                "name": "value",
+                "start": 4,
+                "length": 64
+              },
+              {
+                "name": "checksum",
+                "start": 68,
+                "length": 2
+              }
+            ]
+          ],
+          "mutated": [
+            [
+              "length"
+            ]
+          ],
+          "labels": [
+            "TLV type 1"
+          ]
+        },
+        "expected": {
+          "allowed": [
+            "reject",
+            "ignore",
+            "well_formed_error"
+          ],
+          "not_allowed": [
+            "crash",
+            "hang"
+          ]
+        },
+        "transport": {
+          "sent": false,
+          "payload_count": 1,
+          "payload_sizes": [
+            70
+          ]
+        },
+        "monitor_before": {},
+        "monitor_after": {}
+      },
+      "payload_hex": [
+        "0101003f585858585858585858585858585858585858585858585858585858585858585858585858585858585858585858585858585858585858585858585858585858581641"
+      ],
+      "error": null,
+      "index": 20,
+      "seed": 7,
+      "started_at": "2026-10-15T06:23:12.836+00:00",
+      "duration_ms": 0.001,
+      "replay": "python3 examples/run_dry_campaign.py --protocol generic-tlv --seed 7 --cases 1000 --only tlv_20_short_length",
+      "reasons": [
+        "nothing was sent"
+      ]
+    },
+    {
+      "case_name": "tlv_21_long_length",
+      "layer": "packet",
+      "protocol": "generic-tlv",
+      "status": "DRY_RUN",
+      "observations": {
+        "metadata": {
+          "mutation": "long_length",
+          "size": 70,
+          "layouts": [
+            [
+              {
+                "name": "version",
+                "start": 0,
+                "length": 1
+              },
+              {
+                "name": "msg_type",
+                "start": 1,
+                "length": 1
+              },
+              {
+                "name": "length",
+                "start": 2,
+                "length": 2
+              },
+              {
+                "name": "value",
+                "start": 4,
+                "length": 64
+              },
+              {
+                "name": "checksum",
+                "start": 68,
+                "length": 2
+              }
+            ]
+          ],
+          "mutated": [
+            [
+              "length"
+            ]
+          ],
+          "labels": [
+            "TLV type 1"
+          ]
+        },
+        "expected": {
+          "allowed": [
+            "reject",
+            "ignore",
+            "well_formed_error"
+          ],
+          "not_allowed": [
+            "crash",
+            "hang"
+          ]
+        },
+        "transport": {
+          "sent": false,
+          "payload_count": 1,
+          "payload_sizes": [
+            70
+          ]
+        },
+        "monitor_before": {},
+        "monitor_after": {}
+      },
+      "payload_hex": [
+        "010100a45858585858585858585858585858585858585858585858585858585858585858585858585858585858585858585858585858585858585858585858585858585816a6"
+      ],
+      "error": null,
+      "index": 21,
+      "seed": 7,
+      "started_at": "2026-10-15T06:23:12.836+00:00",
+      "duration_ms": 0.002,
+      "replay": "python3 examples/run_dry_campaign.py --protocol generic-tlv --seed 7 --cases 1000 --only tlv_21_long_length",
+      "reasons": [
+        "nothing was sent"
+      ]
+    },
+    {
+      "case_name": "tlv_22_bad_checksum",
+      "layer": "packet",
+      "protocol": "generic-tlv",
+      "status": "DRY_RUN",
+      "observations": {
+        "metadata": {
+          "mutation": "bad_checksum",
+          "size": 70,
+          "layouts": [
+            [
+              {
+                "name": "version",
+                "start": 0,
+                "length": 1
+              },
+              {
+                "name": "msg_type",
+                "start": 1,
+                "length": 1
+              },
+              {
+                "name": "length",
+                "start": 2,
+                "length": 2
+              },
+              {
+                "name": "value",
+                "start": 4,
+                "length": 64
+              },
+              {
+                "name": "checksum",
+                "start": 68,
+                "length": 2
+              }
+            ]
+          ],
+          "mutated": [
+            [
+              "checksum"
+            ]
+          ],
+          "labels": [
+            "TLV type 1"
+          ]
+        },
+        "expected": {
+          "allowed": [
+            "reject",
+            "ignore",
+            "well_formed_error"
+          ],
+          "not_allowed": [
+            "crash",
+            "hang"
+          ]
+        },
+        "transport": {
+          "sent": false,
+          "payload_count": 1,
+          "payload_sizes": [
+            70
+          ]
+        },
+        "monitor_before": {},
+        "monitor_after": {}
+      },
+      "payload_hex": [
+        "0101004058585858585858585858585858585858585858585858585858585858585858585858585858585858585858585858585858585858585858585858585858585858dead"
+      ],
+      "error": null,
+      "index": 22,
+      "seed": 7,
+      "started_at": "2026-10-15T06:23:12.836+00:00",
+      "duration_ms": 0.001,
+      "replay": "python3 examples/run_dry_campaign.py --protocol generic-tlv --seed 7 --cases 1000 --only tlv_22_bad_checksum",
+      "reasons": [
+        "nothing was sent"
+      ]
+    },
+    {
+      "case_name": "tlv_23_unknown_type",
+      "layer": "packet",
+      "protocol": "generic-tlv",
+      "status": "DRY_RUN",
+      "observations": {
+        "metadata": {
+          "mutation": "unknown_type",
+          "size": 70,
+          "layouts": [
+            [
+              {
+                "name": "version",
+                "start": 0,
+                "length": 1
+              },
+              {
+                "name": "msg_type",
+                "start": 1,
+                "length": 1
+              },
+              {
+                "name": "length",
+                "start": 2,
+                "length": 2
+              },
+              {
+                "name": "value",
+                "start": 4,
+                "length": 64
+              },
+              {
+                "name": "checksum",
+                "start": 68,
+                "length": 2
+              }
+            ]
+          ],
+          "mutated": [
+            [
+              "msg_type"
+            ]
+          ],
+          "labels": [
+            "TLV type 255"
+          ]
+        },
+        "expected": {
+          "allowed": [
+            "reject",
+            "ignore",
+            "well_formed_error"
+          ],
+          "not_allowed": [
+            "crash",
+            "hang"
+          ]
+        },
+        "transport": {
+          "sent": false,
+          "payload_count": 1,
+          "payload_sizes": [
+            70
+          ]
+        },
+        "monitor_before": {},
+        "monitor_after": {}
+      },
+      "payload_hex": [
+        "01ff0040585858585858585858585858585858585858585858585858585858585858585858585858585858585858585858585858585858585858585858585858585858581740"
+      ],
+      "error": null,
+      "index": 23,
+      "seed": 7,
+      "started_at": "2026-10-15T06:23:12.836+00:00",
+      "duration_ms": 0.001,
+      "replay": "python3 examples/run_dry_campaign.py --protocol generic-tlv --seed 7 --cases 1000 --only tlv_23_unknown_type",
+      "reasons": [
+        "nothing was sent"
+      ]
+    },
+    {
+      "case_name": "tlv_24_invalid_version",
+      "layer": "packet",
+      "protocol": "generic-tlv",
+      "status": "DRY_RUN",
+      "observations": {
+        "metadata": {
+          "mutation": "invalid_version",
+          "size": 70,
+          "layouts": [
+            [
+              {
+                "name": "version",
+                "start": 0,
+                "length": 1
+              },
+              {
+                "name": "msg_type",
+                "start": 1,
+                "length": 1
+              },
+              {
+                "name": "length",
+                "start": 2,
+                "length": 2
+              },
+              {
+                "name": "value",
+                "start": 4,
+                "length": 64
+              },
+              {
+                "name": "checksum",
+                "start": 68,
+                "length": 2
+              }
+            ]
+          ],
+          "mutated": [
+            [
+              "version"
+            ]
+          ],
+          "labels": [
+            "TLV type 1"
+          ]
+        },
+        "expected": {
+          "allowed": [
+            "reject",
+            "ignore",
+            "well_formed_error"
+          ],
+          "not_allowed": [
+            "crash",
+            "hang"
+          ]
+        },
+        "transport": {
+          "sent": false,
+          "payload_count": 1,
+          "payload_sizes": [
+            70
+          ]
+        },
+        "monitor_before": {},
+        "monitor_after": {}
+      },
+      "payload_hex": [
+        "ff010040585858585858585858585858585858585858585858585858585858585858585858585858585858585858585858585858585858585858585858585858585858581740"
+      ],
+      "error": null,
+      "index": 24,
+      "seed": 7,
+      "started_at": "2026-10-15T06:23:12.836+00:00",
+      "duration_ms": 0.001,
+      "replay": "python3 examples/run_dry_campaign.py --protocol generic-tlv --seed 7 --cases 1000 --only tlv_24_invalid_version",
+      "reasons": [
+        "nothing was sent"
+      ]
+    },
+    {
+      "case_name": "tlv_25_valid",
+      "layer": "packet",
+      "protocol": "generic-tlv",
+      "status": "DRY_RUN",
+      "observations": {
+        "metadata": {
+          "mutation": "valid",
+          "size": 1030,
+          "layouts": [
+            [
+              {
+                "name": "version",
+                "start": 0,
+                "length": 1
+              },
+              {
+                "name": "msg_type",
+                "start": 1,
+                "length": 1
+              },
+              {
+                "name": "length",
+                "start": 2,
+                "length": 2
+              },
+              {
+                "name": "value",
+                "start": 4,
+                "length": 1024
+              },
+              {
+                "name": "checksum",
+                "start": 1028,
+                "length": 2
+              }
+            ]
+          ],
+          "mutated": [
+            []
+          ],
+          "labels": [
+            "TLV type 1"
+          ]
+        },
+        "expected": {
+          "allowed": [
+            "reject",
+            "ignore",
+            "well_formed_error"
+          ],
+          "not_allowed": [
+            "crash",
+            "hang"
+          ]
+        },
+        "transport": {
+          "sent": false,
+          "payload_count": 1,
+          "payload_sizes": [
+            1030
+          ]
+        },
+        "monitor_before": {},
+        "monitor_after": {}
+      },
+      "payload_hex": [
+        "01010400595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959596406"
+      ],
+      "error": null,
+      "index": 25,
+      "seed": 7,
+      "started_at": "2026-10-15T06:23:12.836+00:00",
+      "duration_ms": 0.002,
+      "replay": "python3 examples/run_dry_campaign.py --protocol generic-tlv --seed 7 --cases 1000 --only tlv_25_valid",
+      "reasons": [
+        "nothing was sent"
+      ]
+    },
+    {
+      "case_name": "tlv_26_zero_length_with_value",
+      "layer": "packet",
+      "protocol": "generic-tlv",
+      "status": "DRY_RUN",
+      "observations": {
+        "metadata": {
+          "mutation": "zero_length_with_value",
+          "size": 1030,
+          "layouts": [
+            [
+              {
+                "name": "version",
+                "start": 0,
+                "length": 1
+              },
+              {
+                "name": "msg_type",
+                "start": 1,
+                "length": 1
+              },
+              {
+                "name": "length",
+                "start": 2,
+                "length": 2
+              },
+              {
+                "name": "value",
+                "start": 4,
+                "length": 1024
+              },
+              {
+                "name": "checksum",
+                "start": 1028,
+                "length": 2
+              }
+            ]
+          ],
+          "mutated": [
+            [
+              "length"
+            ]
+          ],
+          "labels": [
+            "TLV type 1"
+          ]
+        },
+        "expected": {
+          "allowed": [
+            "reject",
+            "ignore",
+            "well_formed_error"
+          ],
+          "not_allowed": [
+            "crash",
+            "hang"
+          ]
+        },
+        "transport": {
+          "sent": false,
+          "payload_count": 1,
+          "payload_sizes": [
+            1030
+          ]
+        },
+        "monitor_before": {},
+        "monitor_after": {}
+      },
+      "payload_hex": [
+        "01010000595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959596402"
+      ],
+      "error": null,
+      "index": 26,
+      "seed": 7,
+      "started_at": "2026-10-15T06:23:12.836+00:00",
+      "duration_ms": 0.053,
+      "replay": "python3 examples/run_dry_campaign.py --protocol generic-tlv --seed 7 --cases 1000 --only tlv_26_zero_length_with_value",
+      "reasons": [
+        "nothing was sent"
+      ]
+    },
+    {
+      "case_name": "tlv_27_short_length",
+      "layer": "packet",
+      "protocol": "generic-tlv",
+      "status": "DRY_RUN",
+      "observations": {
+        "metadata": {
+          "mutation": "short_length",
+          "size": 1030,
+          "layouts": [
+            [
+              {
+                "name": "version",
+                "start": 0,
+                "length": 1
+              },
+              {
+                "name": "msg_type",
+                "start": 1,
+                "length": 1
+              },
+              {
+                "name": "length",
+                "start": 2,
+                "length": 2
+              },
+              {
+                "name": "value",
+                "start": 4,
+                "length": 1024
+              },
+              {
+                "name": "checksum",
+                "start": 1028,
+                "length": 2
+              }
+            ]
+          ],
+          "mutated": [
+            [
+              "length"
+            ]
+          ],
+          "labels": [
+            "TLV type 1"
+          ]
+        },
+        "expected": {
+          "allowed": [
+            "reject",
+            "ignore",
+            "well_formed_error"
+          ],
+          "not_allowed": [
+            "crash",
+            "hang"
+          ]
+        },
+        "transport": {
+          "sent": false,
+          "payload_count": 1,
+          "payload_sizes": [
+            1030
+          ]
+        },
+        "monitor_before": {},
+        "monitor_after": {}
+      },
+      "payload_hex": [
+        "010103ff595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959596504"
+      ],
+      "error": null,
+      "index": 27,
+      "seed": 7,
+      "started_at": "2026-10-15T06:23:12.836+00:00",
+      "duration_ms": 0.003,
+      "replay": "python3 examples/run_dry_campaign.py --protocol generic-tlv --seed 7 --cases 1000 --only tlv_27_short_length",
+      "reasons": [
+        "nothing was sent"
+      ]
+    },
+    {
+      "case_name": "tlv_28_long_length",
+      "layer": "packet",
+      "protocol": "generic-tlv",
+      "status": "DRY_RUN",
+      "observations": {
+        "metadata": {
+          "mutation": "long_length",
+          "size": 1030,
+          "layouts": [
+            [
+              {
+                "name": "version",
+                "start": 0,
+                "length": 1
+              },
+              {
+                "name": "msg_type",
+                "start": 1,
+                "length": 1
+              },
+              {
+                "name": "length",
+                "start": 2,
+                "length": 2
+              },
+              {
+                "name": "value",
+                "start": 4,
+                "length": 1024
+              },
+              {
+                "name": "checksum",
+                "start": 1028,
+                "length": 2
+              }
+            ]
+          ],
+          "mutated": [
+            [
+              "length"
+            ]
+          ],
+          "labels": [
+            "TLV type 1"
+          ]
+        },
+        "expected": {
+          "allowed": [
+            "reject",
+            "ignore",
+            "well_formed_error"
+          ],
+          "not_allowed": [
+            "crash",
+            "hang"
+          ]
+        },
+        "transport": {
+          "sent": false,
+          "payload_count": 1,
+          "payload_sizes": [
+            1030
+          ]
+        },
+        "monitor_before": {},
+        "monitor_after": {}
+      },
+      "payload_hex": [
+        "0101046459595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959646a"
+      ],
+      "error": null,
+      "index": 28,
+      "seed": 7,
+      "started_at": "2026-10-15T06:23:12.836+00:00",
+      "duration_ms": 0.002,
+      "replay": "python3 examples/run_dry_campaign.py --protocol generic-tlv --seed 7 --cases 1000 --only tlv_28_long_length",
+      "reasons": [
+        "nothing was sent"
+      ]
+    },
+    {
+      "case_name": "tlv_29_bad_checksum",
+      "layer": "packet",
+      "protocol": "generic-tlv",
+      "status": "DRY_RUN",
+      "observations": {
+        "metadata": {
+          "mutation": "bad_checksum",
+          "size": 1030,
+          "layouts": [
+            [
+              {
+                "name": "version",
+                "start": 0,
+                "length": 1
+              },
+              {
+                "name": "msg_type",
+                "start": 1,
+                "length": 1
+              },
+              {
+                "name": "length",
+                "start": 2,
+                "length": 2
+              },
+              {
+                "name": "value",
+                "start": 4,
+                "length": 1024
+              },
+              {
+                "name": "checksum",
+                "start": 1028,
+                "length": 2
+              }
+            ]
+          ],
+          "mutated": [
+            [
+              "checksum"
+            ]
+          ],
+          "labels": [
+            "TLV type 1"
+          ]
+        },
+        "expected": {
+          "allowed": [
+            "reject",
+            "ignore",
+            "well_formed_error"
+          ],
+          "not_allowed": [
+            "crash",
+            "hang"
+          ]
+        },
+        "transport": {
+          "sent": false,
+          "payload_count": 1,
+          "payload_sizes": [
+            1030
+          ]
+        },
+        "monitor_before": {},
+        "monitor_after": {}
+      },
+      "payload_hex": [
+        "0101040059595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959dead"
+      ],
+      "error": null,
+      "index": 29,
+      "seed": 7,
+      "started_at": "2026-10-15T06:23:12.836+00:00",
+      "duration_ms": 0.002,
+      "replay": "python3 examples/run_dry_campaign.py --protocol generic-tlv --seed 7 --cases 1000 --only tlv_29_bad_checksum",
+      "reasons": [
+        "nothing was sent"
+      ]
+    },
+    {
+      "case_name": "tlv_30_unknown_type",
+      "layer": "packet",
+      "protocol": "generic-tlv",
+      "status": "DRY_RUN",
+      "observations": {
+        "metadata": {
+          "mutation": "unknown_type",
+          "size": 1030,
+          "layouts": [
+            [
+              {
+                "name": "version",
+                "start": 0,
+                "length": 1
+              },
+              {
+                "name": "msg_type",
+                "start": 1,
+                "length": 1
+              },
+              {
+                "name": "length",
+                "start": 2,
+                "length": 2
+              },
+              {
+                "name": "value",
+                "start": 4,
+                "length": 1024
+              },
+              {
+                "name": "checksum",
+                "start": 1028,
+                "length": 2
+              }
+            ]
+          ],
+          "mutated": [
+            [
+              "msg_type"
+            ]
+          ],
+          "labels": [
+            "TLV type 255"
+          ]
+        },
+        "expected": {
+          "allowed": [
+            "reject",
+            "ignore",
+            "well_formed_error"
+          ],
+          "not_allowed": [
+            "crash",
+            "hang"
+          ]
+        },
+        "transport": {
+          "sent": false,
+          "payload_count": 1,
+          "payload_sizes": [
+            1030
+          ]
+        },
+        "monitor_before": {},
+        "monitor_after": {}
+      },
+      "payload_hex": [
+        "01ff0400595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959596504"
+      ],
+      "error": null,
+      "index": 30,
+      "seed": 7,
+      "started_at": "2026-10-15T06:23:12.836+00:00",
+      "duration_ms": 0.002,
+      "replay": "python3 examples/run_dry_campaign.py --protocol generic-tlv --seed 7 --cases 1000 --only tlv_30_unknown_type",
+      "reasons": [
+        "nothing was sent"
+      ]
+    },
+    {
+      "case_name": "tlv_31_invalid_version",
+      "layer": "packet",
+      "protocol": "generic-tlv",
+      "status": "DRY_RUN",
+      "observations": {
+        "metadata": {
+          "mutation": "invalid_version",
+          "size": 1030,
+          "layouts": [
+            [
+              {
+                "name": "version",
+                "start": 0,
+                "length": 1
+              },
+              {
+                "name": "msg_type",
+                "start": 1,
+                "length": 1
+              },
+              {
+                "name": "length",
+                "start": 2,
+                "length": 2
+              },
+              {
+                "name": "value",
+                "start": 4,
+                "length": 1024
+              },
+              {
+                "name": "checksum",
+                "start": 1028,
+                "length": 2
+              }
+            ]
+          ],
+          "mutated": [
+            [
+              "version"
+            ]
+          ],
+          "labels": [
+            "TLV type 1"
+          ]
+        },
+        "expected": {
+          "allowed": [
+            "reject",
+            "ignore",
+            "well_formed_error"
+          ],
+          "not_allowed": [
+            "crash",
+            "hang"
+          ]
+        },
+        "transport": {
+          "sent": false,
+          "payload_count": 1,
+          "payload_sizes": [
+            1030
+          ]
+        },
+        "monitor_before": {},
+        "monitor_after": {}
+      },
+      "payload_hex": [
+        "ff010400595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959595959596504"
+      ],
+      "error": null,
+      "index": 31,
+      "seed": 7,
+      "started_at": "2026-10-15T06:23:12.836+00:00",
+      "duration_ms": 0.002,
+      "replay": "python3 examples/run_dry_campaign.py --protocol generic-tlv --seed 7 --cases 1000 --only tlv_31_invalid_version",
+      "reasons": [
+        "nothing was sent"
+      ]
+    },
+    {
+      "case_name": "tlv_32_valid",
+      "layer": "packet",
+      "protocol": "generic-tlv",
+      "status": "DRY_RUN",
+      "observations": {
+        "metadata": {
+          "mutation": "valid",
+          "size": 70,
+          "layouts": [
+            [
+              {
+                "name": "version",
+                "start": 0,
+                "length": 1
+              },
+              {
+                "name": "msg_type",
+                "start": 1,
+                "length": 1
+              },
+              {
+                "name": "length",
+                "start": 2,
+                "length": 2
+              },
+              {
+                "name": "value",
+                "start": 4,
+                "length": 64
+              },
+              {
+                "name": "checksum",
+                "start": 68,
+                "length": 2
+              }
+            ]
+          ],
+          "mutated": [
+            []
+          ],
+          "labels": [
+            "TLV type 1"
+          ]
+        },
+        "expected": {
+          "allowed": [
+            "reject",
+            "ignore",
+            "well_formed_error"
+          ],
+          "not_allowed": [
+            "crash",
+            "hang"
+          ]
+        },
+        "transport": {
+          "sent": false,
+          "payload_count": 1,
+          "payload_sizes": [
+            70
+          ]
+        },
+        "monitor_before": {},
+        "monitor_after": {}
+      },
+      "payload_hex": [
+        "01010040000102030405060708090a0b0c0d0e0f101112131415161718191a1b1c1d1e1f202122232425262728292a2b2c2d2e2f303132333435363738393a3b3c3d3e3f0822"
+      ],
+      "error": null,
+      "index": 32,
+      "seed": 7,
+      "started_at": "2026-10-15T06:23:12.836+00:00",
+      "duration_ms": 0.001,
+      "replay": "python3 examples/run_dry_campaign.py --protocol generic-tlv --seed 7 --cases 1000 --only tlv_32_valid",
+      "reasons": [
+        "nothing was sent"
+      ]
+    },
+    {
+      "case_name": "tlv_33_zero_length_with_value",
+      "layer": "packet",
+      "protocol": "generic-tlv",
+      "status": "DRY_RUN",
+      "observations": {
+        "metadata": {
+          "mutation": "zero_length_with_value",
+          "size": 70,
+          "layouts": [
+            [
+              {
+                "name": "version",
+                "start": 0,
+                "length": 1
+              },
+              {
+                "name": "msg_type",
+                "start": 1,
+                "length": 1
+              },
+              {
+                "name": "length",
+                "start": 2,
+                "length": 2
+              },
+              {
+                "name": "value",
+                "start": 4,
+                "length": 64
+              },
+              {
+                "name": "checksum",
+                "start": 68,
+                "length": 2
+              }
+            ]
+          ],
+          "mutated": [
+            [
+              "length"
+            ]
+          ],
+          "labels": [
+            "TLV type 1"
+          ]
+        },
+        "expected": {
+          "allowed": [
+            "reject",
+            "ignore",
+            "well_formed_error"
+          ],
+          "not_allowed": [
+            "crash",
+            "hang"
+          ]
+        },
+        "transport": {
+          "sent": false,
+          "payload_count": 1,
+          "payload_sizes": [
+            70
+          ]
+        },
+        "monitor_before": {},
+        "monitor_after": {}
+      },
+      "payload_hex": [
+        "01010000000102030405060708090a0b0c0d0e0f101112131415161718191a1b1c1d1e1f202122232425262728292a2b2c2d2e2f303132333435363738393a3b3c3d3e3f07e2"
+      ],
+      "error": null,
+      "index": 33,
+      "seed": 7,
+      "started_at": "2026-10-15T06:23:12.836+00:00",
+      "duration_ms": 0.001,
+      "replay": "python3 examples/run_dry_campaign.py --protocol generic-tlv --seed 7 --cases 1000 --only tlv_33_zero_length_with_value",
+      "reasons": [
+        "nothing was sent"
+      ]
+    },
+    {
+      "case_name": "tlv_34_short_length",
+      "layer": "packet",
+      "protocol": "generic-tlv",
+      "status": "DRY_RUN",
+      "observations": {
+        "metadata": {
+          "mutation": "short_length",
+          "size": 70,
+          "layouts": [
+            [
+              {
+                "name": "version",
+                "start": 0,
+                "length": 1
+              },
+              {
+                "name": "msg_type",
+                "start": 1,
+                "length": 1
+              },
+              {
+                "name": "length",
+                "start": 2,
+                "length": 2
+              },
+              {
+                "name": "value",
+                "start": 4,
+                "length": 64
+              },
+              {
+                "name": "checksum",
+                "start": 68,
+                "length": 2
+              }
+            ]
+          ],
+          "mutated": [
+            [
+              "length"
+            ]
+          ],
+          "labels": [
+            "TLV type 1"
+          ]
+        },
+        "expected": {
+          "allowed": [
+            "reject",
+            "ignore",
+            "well_formed_error"
+          ],
+          "not_allowed": [
+            "crash",
+            "hang"
+          ]
+        },
+        "transport": {
+          "sent": false,
+          "payload_count": 1,
+          "payload_sizes": [
+            70
+          ]
+        },
+        "monitor_before": {},
+        "monitor_after": {}
+      },
+      "payload_hex": [
+        "0101003f000102030405060708090a0b0c0d0e0f101112131415161718191a1b1c1d1e1f202122232425262728292a2b2c2d2e2f303132333435363738393a3b3c3d3e3f0821"
+      ],
+      "error": null,
+      "index": 34,
+      "seed": 7,
+      "started_at": "2026-10-15T06:23:12.836+00:00",
+      "duration_ms": 0.002,
+      "replay": "python3 examples/run_dry_campaign.py --protocol generic-tlv --seed 7 --cases 1000 --only tlv_34_short_length",
+      "reasons": [
+        "nothing was sent"
+      ]
+    },
+    {
+      "case_name": "tlv_35_long_length",
+      "layer": "packet",
+      "protocol": "generic-tlv",
+      "status": "DRY_RUN",
+      "observations": {
+        "metadata": {
+          "mutation": "long_length",
+          "size": 70,
+          "layouts": [
+            [
+              {
+                "name": "version",
+                "start": 0,
+                "length": 1
+              },
+              {
+                "name": "msg_type",
+                "start": 1,
+                "length": 1
+              },
+              {
+                "name": "length",
+                "start": 2,
+                "length": 2
+              },
+              {
+                "name": "value",
+                "start": 4,
+                "length": 64
+              },
+              {
+                "name": "checksum",
+                "start": 68,
+                "length": 2
+              }
+            ]
+          ],
+          "mutated": [
+            [
+              "length"
+            ]
+          ],
+          "labels": [
+            "TLV type 1"
+          ]
+        },
+        "expected": {
+          "allowed": [
+            "reject",
+            "ignore",
+            "well_formed_error"
+          ],
+          "not_allowed": [
+            "crash",
+            "hang"
+          ]
+        },
+        "transport": {
+          "sent": false,
+          "payload_count": 1,
+          "payload_sizes": [
+            70
+          ]
+        },
+        "monitor_before": {},
+        "monitor_after": {}
+      },
+      "payload_hex": [
+        "010100a4000102030405060708090a0b0c0d0e0f101112131415161718191a1b1c1d1e1f202122232425262728292a2b2c2d2e2f303132333435363738393a3b3c3d3e3f0886"
+      ],
+      "error": null,
+      "index": 35,
+      "seed": 7,
+      "started_at": "2026-10-15T06:23:12.836+00:00",
+      "duration_ms": 0.001,
+      "replay": "python3 examples/run_dry_campaign.py --protocol generic-tlv --seed 7 --cases 1000 --only tlv_35_long_length",
+      "reasons": [
+        "nothing was sent"
+      ]
+    },
+    {
+      "case_name": "tlv_36_bad_checksum",
+      "layer": "packet",
+      "protocol": "generic-tlv",
+      "status": "DRY_RUN",
+      "observations": {
+        "metadata": {
+          "mutation": "bad_checksum",
+          "size": 70,
+          "layouts": [
+            [
+              {
+                "name": "version",
+                "start": 0,
+                "length": 1
+              },
+              {
+                "name": "msg_type",
+                "start": 1,
+                "length": 1
+              },
+              {
+                "name": "length",
+                "start": 2,
+                "length": 2
+              },
+              {
+                "name": "value",
+                "start": 4,
+                "length": 64
+              },
+              {
+                "name": "checksum",
+                "start": 68,
+                "length": 2
+              }
+            ]
+          ],
+          "mutated": [
+            [
+              "checksum"
+            ]
+          ],
+          "labels": [
+            "TLV type 1"
+          ]
+        },
+        "expected": {
+          "allowed": [
+            "reject",
+            "ignore",
+            "well_formed_error"
+          ],
+          "not_allowed": [
+            "crash",
+            "hang"
+          ]
+        },
+        "transport": {
+          "sent": false,
+          "payload_count": 1,
+          "payload_sizes": [
+            70
+          ]
+        },
+        "monitor_before": {},
+        "monitor_after": {}
+      },
+      "payload_hex": [
+        "01010040000102030405060708090a0b0c0d0e0f101112131415161718191a1b1c1d1e1f202122232425262728292a2b2c2d2e2f303132333435363738393a3b3c3d3e3fdead"
+      ],
+      "error": null,
+      "index": 36,
+      "seed": 7,
+      "started_at": "2026-10-15T06:23:12.836+00:00",
+      "duration_ms": 0.001,
+      "replay": "python3 examples/run_dry_campaign.py --protocol generic-tlv --seed 7 --cases 1000 --only tlv_36_bad_checksum",
+      "reasons": [
+        "nothing was sent"
+      ]
+    },
+    {
+      "case_name": "tlv_37_unknown_type",
+      "layer": "packet",
+      "protocol": "generic-tlv",
+      "status": "DRY_RUN",
+      "observations": {
+        "metadata": {
+          "mutation": "unknown_type",
+          "size": 70,
+          "layouts": [
+            [
+              {
+                "name": "version",
+                "start": 0,
+                "length": 1
+              },
+              {
+                "name": "msg_type",
+                "start": 1,
+                "length": 1
+              },
+              {
+                "name": "length",
+                "start": 2,
+                "length": 2
+              },
+              {
+                "name": "value",
+                "start": 4,
+                "length": 64
+              },
+              {
+                "name": "checksum",
+                "start": 68,
+                "length": 2
+              }
+            ]
+          ],
+          "mutated": [
+            [
+              "msg_type"
+            ]
+          ],
+          "labels": [
+            "TLV type 255"
+          ]
+        },
+        "expected": {
+          "allowed": [
+            "reject",
+            "ignore",
+            "well_formed_error"
+          ],
+          "not_allowed": [
+            "crash",
+            "hang"
+          ]
+        },
+        "transport": {
+          "sent": false,
+          "payload_count": 1,
+          "payload_sizes": [
+            70
+          ]
+        },
+        "monitor_before": {},
+        "monitor_after": {}
+      },
+      "payload_hex": [
+        "01ff0040000102030405060708090a0b0c0d0e0f101112131415161718191a1b1c1d1e1f202122232425262728292a2b2c2d2e2f303132333435363738393a3b3c3d3e3f0920"
+      ],
+      "error": null,
+      "index": 37,
+      "seed": 7,
+      "started_at": "2026-10-15T06:23:12.836+00:00",
+      "duration_ms": 0.002,
+      "replay": "python3 examples/run_dry_campaign.py --protocol generic-tlv --seed 7 --cases 1000 --only tlv_37_unknown_type",
+      "reasons": [
+        "nothing was sent"
+      ]
+    },
+    {
+      "case_name": "tlv_38_invalid_version",
+      "layer": "packet",
+      "protocol": "generic-tlv",
+      "status": "DRY_RUN",
+      "observations": {
+        "metadata": {
+          "mutation": "invalid_version",
+          "size": 70,
+          "layouts": [
+            [
+              {
+                "name": "version",
+                "start": 0,
+                "length": 1
+              },
+              {
+                "name": "msg_type",
+                "start": 1,
+                "length": 1
+              },
+              {
+                "name": "length",
+                "start": 2,
+                "length": 2
+              },
+              {
+                "name": "value",
+                "start": 4,
+                "length": 64
+              },
+              {
+                "name": "checksum",
+                "start": 68,
+                "length": 2
+              }
+            ]
+          ],
+          "mutated": [
+            [
+              "version"
+            ]
+          ],
+          "labels": [
+            "TLV type 1"
+          ]
+        },
+        "expected": {
+          "allowed": [
+            "reject",
+            "ignore",
+            "well_formed_error"
+          ],
+          "not_allowed": [
+            "crash",
+            "hang"
+          ]
+        },
+        "transport": {
+          "sent": false,
+          "payload_count": 1,
+          "payload_sizes": [
+            70
+          ]
+        },
+        "monitor_before": {},
+        "monitor_after": {}
+      },
+      "payload_hex": [
+        "ff010040000102030405060708090a0b0c0d0e0f101112131415161718191a1b1c1d1e1f202122232425262728292a2b2c2d2e2f303132333435363738393a3b3c3d3e3f0920"
+      ],
+      "error": null,
+      "index": 38,
+      "seed": 7,
+      "started_at": "2026-10-15T06:23:12.836+00:00",
+      "duration_ms": 0.002,
+      "replay": "python3 examples/run_dry_campaign.py --protocol generic-tlv --seed 7 --cases 1000 --only tlv_38_invalid_version",
+      "reasons": [
+        "nothing was sent"
+      ]
+    },
+    {
+      "case_name": "ipv4_icmp_0_ihl_5_len_28",
+      "layer": "network",
+      "protocol": "ipv4-icmp",
+      "status": "DRY_RUN",
+      "observations": {
+        "metadata": {
+          "mutation": "ihl_5_len_28",
+          "size": 28,
+          "layouts": [
+            [
+              {
+                "name": "version_ihl",
+                "start": 0,
+                "length": 1
+              },
+              {
+                "name": "tos",
+                "start": 1,
+                "length": 1
+              },
+              {
+                "name": "total_length",
+                "start": 2,
+                "length": 2
+              },
+              {
+                "name": "identification",
+                "start": 4,
+                "length": 2
+              },
+              {
+                "name": "flags_fragment",
+                "start": 6,
+                "length": 2
+              },
+              {
+                "name": "ttl",
+                "start": 8,
+                "length": 1
+              },
+              {
+                "name": "protocol",
+                "start": 9,
+                "length": 1
+              },
+              {
+                "name": "header_checksum",
+                "start": 10,
+                "length": 2
+              },
+              {
+                "name": "src_addr",
+                "start": 12,
+                "length": 4
+              },
+              {
+                "name": "dst_addr",
+                "start": 16,
+                "length": 4
+              },
+              {
+                "name": "icmp_type",
+                "start": 20,
+                "length": 1
+              },
+              {
+                "name": "icmp_code",
+                "start": 21,
+                "length": 1
+              },
+              {
+                "name": "icmp_checksum",
+                "start": 22,
+                "length": 2
+              },
+              {
+                "name": "icmp_data",
+                "start": 24,
+                "length": 4
+              }
+            ]
+          ],
+          "mutated": [
+            []
+          ],
+          "labels": [
+            "IPv4 + ICMP echo request"
+          ]
+        },
+        "expected": {
+          "not_allowed": [
+            "kernel_panic",
+            "interface_reset",
+            "crash"
+          ]
+        },
+        "transport": {
+          "sent": false,
+          "payload_count": 1,
+          "payload_sizes": [
+            28
+          ]
+        },
+        "monitor_before": {},
+        "monitor_after": {}
+      },
+      "payload_hex": [
+        "4500001c00000000400166df0a0000010a0000020800596f50494e47"
+      ],
+      "error": null,
+      "index": 39,
+      "seed": 7,
+      "started_at": "2026-10-15T06:23:12.836+00:00",
+      "duration_ms": 0.007,
+      "replay": "python3 examples/run_dry_campaign.py --protocol ipv4-icmp --seed 7 --cases 1000 --only ipv4_icmp_0_ihl_5_len_28",
+      "reasons": [
+        "nothing was sent"
+      ]
+    },
+    {
+      "case_name": "ipv4_icmp_1_ihl_5_len_20",
+      "layer": "network",
+      "protocol": "ipv4-icmp",
+      "status": "DRY_RUN",
+      "observations": {
+        "metadata": {
+          "mutation": "ihl_5_len_20",
+          "size": 28,
+          "layouts": [
+            [
+              {
+                "name": "version_ihl",
+                "start": 0,
+                "length": 1
+              },
+              {
+                "name": "tos",
+                "start": 1,
+                "length": 1
+              },
+              {
+                "name": "total_length",
+                "start": 2,
+                "length": 2
+              },
+              {
+                "name": "identification",
+                "start": 4,
+                "length": 2
+              },
+              {
+                "name": "flags_fragment",
+                "start": 6,
+                "length": 2
+              },
+              {
+                "name": "ttl",
+                "start": 8,
+                "length": 1
+              },
+              {
+                "name": "protocol",
+                "start": 9,
+                "length": 1
+              },
+              {
+                "name": "header_checksum",
+                "start": 10,
+                "length": 2
+              },
+              {
+                "name": "src_addr",
+                "start": 12,
+                "length": 4
+              },
+              {
+                "name": "dst_addr",
+                "start": 16,
+                "length": 4
+              },
+              {
+                "name": "icmp_type",
+                "start": 20,
+                "length": 1
+              },
+              {
+                "name": "icmp_code",
+                "start": 21,
+                "length": 1
+              },
+              {
+                "name": "icmp_checksum",
+                "start": 22,
+                "length": 2
+              },
+              {
+                "name": "icmp_data",
+                "start": 24,
+                "length": 4
+              }
+            ]
+          ],
+          "mutated": [
+            [
+              "total_length"
+            ]
+          ],
+          "labels": [
+            "IPv4 + ICMP echo request"
+          ]
+        },
+        "expected": {
+          "not_allowed": [
+            "kernel_panic",
+            "interface_reset",
+            "crash"
+          ]
+        },
+        "transport": {
+          "sent": false,
+          "payload_count": 1,
+          "payload_sizes": [
+            28
+          ]
+        },
+        "monitor_before": {},
+        "monitor_after": {}
+      },
+      "payload_hex": [
+        "4500001400000000400166e70a0000010a0000020800596f50494e47"
+      ],
+      "error": null,
+      "index": 40,
+      "seed": 7,
+      "started_at": "2026-10-15T06:23:12.836+00:00",
+      "duration_ms": 0.002,
+      "replay": "python3 examples/run_dry_campaign.py --protocol ipv4-icmp --seed 7 --cases 1000 --only ipv4_icmp_1_ihl_5_len_20",
+      "reasons": [
+        "nothing was sent"
+      ]
+    },
+    {
+      "case_name": "ipv4_icmp_2_ihl_5_len_0",
+      "layer": "network",
+      "protocol": "ipv4-icmp",
+      "status": "DRY_RUN",
+      "observations": {
+        "metadata": {
+          "mutation": "ihl_5_len_0",
+          "size": 28,
+          "layouts": [
+            [
+              {
+                "name": "version_ihl",
+                "start": 0,
+                "length": 1
+              },
+              {
+                "name": "tos",
+                "start": 1,
+                "length": 1
+              },
+              {
+                "name": "total_length",
+                "start": 2,
+                "length": 2
+              },
+              {
+                "name": "identification",
+                "start": 4,
+                "length": 2
+              },
+              {
+                "name": "flags_fragment",
+                "start": 6,
+                "length": 2
+              },
+              {
+                "name": "ttl",
+                "start": 8,
+                "length": 1
+              },
+              {
+                "name": "protocol",
+                "start": 9,
+                "length": 1
+              },
+              {
+                "name": "header_checksum",
+                "start": 10,
+                "length": 2
+              },
+              {
+                "name": "src_addr",
+                "start": 12,
+                "length": 4
+              },
+              {
+                "name": "dst_addr",
+                "start": 16,
+                "length": 4
+              },
+              {
+                "name": "icmp_type",
+                "start": 20,
+                "length": 1
+              },
+              {
+                "name": "icmp_code",
+                "start": 21,
+                "length": 1
+              },
+              {
+                "name": "icmp_checksum",
+                "start": 22,
+                "length": 2
+              },
+              {
+                "name": "icmp_data",
+                "start": 24,
+                "length": 4
+              }
+            ]
+          ],
+          "mutated": [
+            [
+              "total_length"
+            ]
+          ],
+          "labels": [
+            "IPv4 + ICMP echo request"
+          ]
+        },
+        "expected": {
+          "not_allowed": [
+            "kernel_panic",
+            "interface_reset",
+            "crash"
+          ]
+        },
+        "transport": {
+          "sent": false,
+          "payload_count": 1,
+          "payload_sizes": [
+            28
+          ]
+        },
+        "monitor_before": {},
+        "monitor_after": {}
+      },
+      "payload_hex": [
+        "4500000000000000400166fb0a0000010a0000020800596f50494e47"
+      ],
+      "error": null,
+      "index": 41,
+      "seed": 7,
+      "started_at": "2026-10-15T06:23:12.836+00:00",
+      "duration_ms": 0.006,
+      "replay": "python3 examples/run_dry_campaign.py --protocol ipv4-icmp --seed 7 --cases 1000 --only ipv4_icmp_2_ihl_5_len_0",
+      "reasons": [
+        "nothing was sent"
+      ]
+    },
+    {
+      "case_name": "ipv4_icmp_3_ihl_5_len_65535",
+      "layer": "network",
+      "protocol": "ipv4-icmp",
+      "status": "DRY_RUN",
+      "observations": {
+        "metadata": {
+          "mutation": "ihl_5_len_65535",
+          "size": 28,
+          "layouts": [
+            [
+              {
+                "name": "version_ihl",
+                "start": 0,
+                "length": 1
+              },
+              {
+                "name": "tos",
+                "start": 1,
+                "length": 1
+              },
+              {
+                "name": "total_length",
+                "start": 2,
+                "length": 2
+              },
+              {
+                "name": "identification",
+                "start": 4,
+                "length": 2
+              },
+              {
+                "name": "flags_fragment",
+                "start": 6,
+                "length": 2
+              },
+              {
+                "name": "ttl",
+                "start": 8,
+                "length": 1
+              },
+              {
+                "name": "protocol",
+                "start": 9,
+                "length": 1
+              },
+              {
+                "name": "header_checksum",
+                "start": 10,
+                "length": 2
+              },
+              {
+                "name": "src_addr",
+                "start": 12,
+                "length": 4
+              },
+              {
+                "name": "dst_addr",
+                "start": 16,
+                "length": 4
+              },
+              {
+                "name": "icmp_type",
+                "start": 20,
+                "length": 1
+              },
+              {
+                "name": "icmp_code",
+                "start": 21,
+                "length": 1
+              },
+              {
+                "name": "icmp_checksum",
+                "start": 22,
+                "length": 2
+              },
+              {
+                "name": "icmp_data",
+                "start": 24,
+                "length": 4
+              }
+            ]
+          ],
+          "mutated": [
+            [
+              "total_length"
+            ]
+          ],
+          "labels": [
+            "IPv4 + ICMP echo request"
+          ]
+        },
+        "expected": {
+          "not_allowed": [
+            "kernel_panic",
+            "interface_reset",
+            "crash"
+          ]
+        },
+        "transport": {
+          "sent": false,
+          "payload_count": 1,
+          "payload_sizes": [
+            28
+          ]
+        },
+        "monitor_before": {},
+        "monitor_after": {}
+      },
+      "payload_hex": [
+        "4500ffff00000000400166fb0a0000010a0000020800596f50494e47"
+      ],
+      "error": null,
+      "index": 42,
+      "seed": 7,
+      "started_at": "2026-10-15T06:23:12.836+00:00",
+      "duration_ms": 0.001,
+      "replay": "python3 examples/run_dry_campaign.py --protocol ipv4-icmp --seed 7 --cases 1000 --only ipv4_icmp_3_ihl_5_len_65535",
+      "reasons": [
+        "nothing was sent"
+      ]
+    },
+    {
+      "case_name": "ipv4_icmp_4_ihl_0_len_28",
+      "layer": "network",
+      "protocol": "ipv4-icmp",
+      "status": "DRY_RUN",
+      "observations": {
+        "metadata": {
+          "mutation": "ihl_0_len_28",
+          "size": 28,
+          "layouts": [
+            [
+              {
+                "name": "version_ihl",
+                "start": 0,
+                "length": 1
+              },
+              {
+                "name": "tos",
+                "start": 1,
+                "length": 1
+              },
+              {
+                "name": "total_length",
+                "start": 2,
+                "length": 2
+              },
+              {
+                "name": "identification",
+                "start": 4,
+                "length": 2
+              },
+              {
+                "name": "flags_fragment",
+                "start": 6,
+                "length": 2
+              },
+              {
+                "name": "ttl",
+                "start": 8,
+                "length": 1
+              },
+              {
+                "name": "protocol",
+                "start": 9,
+                "length": 1
+              },
+              {
+                "name": "header_checksum",
+                "start": 10,
+                "length": 2
+              },
+              {
+                "name": "src_addr",
+                "start": 12,
+                "length": 4
+              },
+              {
+                "name": "dst_addr",
+                "start": 16,
+                "length": 4
+              },
+              {
+                "name": "icmp_type",
+                "start": 20,
+                "length": 1
+              },
+              {
+                "name": "icmp_code",
+                "start": 21,
+                "length": 1
+              },
+              {
+                "name": "icmp_checksum",
+                "start": 22,
+                "length": 2
+              },
+              {
+                "name": "icmp_data",
+                "start": 24,
+                "length": 4
+              }
+            ]
+          ],
+          "mutated": [
+            [
+              "version_ihl"
+            ]
+          ],
+          "labels": [
+            "IPv4 + ICMP echo request"
+          ]
+        },
+        "expected": {
+          "not_allowed": [
+            "kernel_panic",
+            "interface_reset",
+            "crash"
+          ]
+        },
+        "transport": {
+          "sent": false,
+          "payload_count": 1,
+          "payload_sizes": [
+            28
+          ]
+        },
+        "monitor_before": {},
+        "monitor_after": {}
+      },
+      "payload_hex": [
+        "4000001c0000000040016bdf0a0000010a0000020800596f50494e47"
+      ],
+      "error": null,
+      "index": 43,
+      "seed": 7,
+      "started_at": "2026-10-15T06:23:12.836+00:00",
+      "duration_ms": 0.001,
+      "replay": "python3 examples/run_dry_campaign.py --protocol ipv4-icmp --seed 7 --cases 1000 --only ipv4_icmp_4_ihl_0_len_28",
+      "reasons": [
+        "nothing was sent"
+      ]
+    },
+    {
+      "case_name": "ipv4_icmp_5_ihl_0_len_20",
+      "layer": "network",
+      "protocol": "ipv4-icmp",
+      "status": "DRY_RUN",
+      "observations": {
+        "metadata": {
+          "mutation": "ihl_0_len_20",
+          "size": 28,
+          "layouts": [
+            [
+              {
+                "name": "version_ihl",
+                "start": 0,
+                "length": 1
+              },
+              {
+                "name": "tos",
+                "start": 1,
+                "length": 1
+              },
+              {
+                "name": "total_length",
+                "start": 2,
+                "length": 2
+              },
+              {
+                "name": "identification",
+                "start": 4,
+                "length": 2
+              },
+              {
+                "name": "flags_fragment",
+                "start": 6,
+                "length": 2
+              },
+              {
+                "name": "ttl",
+                "start": 8,
+                "length": 1
+              },
+              {
+                "name": "protocol",
+                "start": 9,
+                "length": 1
+              },
+              {
+                "name": "header_checksum",
+                "start": 10,
+                "length": 2
+              },
+              {
+                "name": "src_addr",
+                "start": 12,
+                "length": 4
+              },
+              {
+                "name": "dst_addr",
+                "start": 16,
+                "length": 4
+              },
+              {
+                "name": "icmp_type",
+                "start": 20,
+                "length": 1
+              },
+              {
+                "name": "icmp_code",
+                "start": 21,
+                "length": 1
+              },
+              {
+                "name": "icmp_checksum",
+                "start": 22,
+                "length": 2
+              },
+              {
+                "name": "icmp_data",
+                "start": 24,
+                "length": 4
+              }
+            ]
+          ],
+          "mutated": [
+            [
+              "version_ihl",
+              "total_length"
+            ]
+          ],
+          "labels": [
+            "IPv4 + ICMP echo request"
+          ]
+        },
+        "expected": {
+          "not_allowed": [
+            "kernel_panic",
+            "interface_reset",
+            "crash"
+          ]
+        },
+        "transport": {
+          "sent": false,
+          "payload_count": 1,
+          "payload_sizes": [
+            28
+          ]
+        },
+        "monitor_before": {},
+        "monitor_after": {}
+      },
+      "payload_hex": [
+        "400000140000000040016be70a0000010a0000020800596f50494e47"
+      ],
+      "error": null,
+      "index": 44,
+      "seed": 7,
+      "started_at": "2026-10-15T06:23:12.836+00:00",
+      "duration_ms": 0.005,
+      "replay": "python3 examples/run_dry_campaign.py --protocol ipv4-icmp --seed 7 --cases 1000 --only ipv4_icmp_5_ihl_0_len_20",
+      "reasons": [
+        "nothing was sent"
+      ]
+    },
+    {
+      "case_name": "ipv4_icmp_6_ihl_0_len_0",
+      "layer": "network",
+      "protocol": "ipv4-icmp",
+      "status": "DRY_RUN",
+      "observations": {
+        "metadata": {
+          "mutation": "ihl_0_len_0",
+          "size": 28,
+          "layouts": [
+            [
+              {
+                "name": "version_ihl",
+                "start": 0,
+                "length": 1
+              },
+              {
+                "name": "tos",
+                "start": 1,
+                "length": 1
+              },
+              {
+                "name": "total_length",
+                "start": 2,
+                "length": 2
+              },
+              {
+                "name": "identification",
+                "start": 4,
+                "length": 2
+              },
+              {
+                "name": "flags_fragment",
+                "start": 6,
+                "length": 2
+              },
+              {
+                "name": "ttl",
+                "start": 8,
+                "length": 1
+              },
+              {
+                "name": "protocol",
+                "start": 9,
+                "length": 1
+              },
+              {
+                "name": "header_checksum",
+                "start": 10,
+                "length": 2
+              },
+              {
+                "name": "src_addr",
+                "start": 12,
+                "length": 4
+              },
+              {
+                "name": "dst_addr",
+                "start": 16,
+                "length": 4
+              },
+              {
+                "name": "icmp_type",
+                "start": 20,
+                "length": 1
+              },
+              {
+                "name": "icmp_code",
+                "start": 21,
+                "length": 1
+              },
+              {
+                "name": "icmp_checksum",
+                "start": 22,
+                "length": 2
+              },
+              {
+                "name": "icmp_data",
+                "start": 24,
+                "length": 4
+              }
+            ]
+          ],
+          "mutated": [
+            [
+              "version_ihl",
+              "total_length"
+            ]
+          ],
+          "labels": [
+            "IPv4 + ICMP echo request"
+          ]
+        },
+        "expected": {
+          "not_allowed": [
+            "kernel_panic",
+            "interface_reset",
+            "crash"
+          ]
+        },
+        "transport": {
+          "sent": false,
+          "payload_count": 1,
+          "payload_sizes": [
+            28
+          ]
+        },
+        "monitor_before": {},
+        "monitor_after": {}
+      },
+      "payload_hex": [
+        "400000000000000040016bfb0a0000010a0000020800596f50494e47"
+      ],
+      "error": null,
+      "index": 45,
+      "seed": 7,
+      "started_at": "2026-10-15T06:23:12.836+00:00",
+      "duration_ms": 0.001,
+      "replay": "python3 examples/run_dry_campaign.py --protocol ipv4-icmp --seed 7 --cases 1000 --only ipv4_icmp_6_ihl_0_len_0",
+      "reasons": [
+        "nothing was sent"
+      ]
+    },
+    {
+      "case_name": "ipv4_icmp_7_ihl_0_len_65535",
+      "layer": "network",
+      "protocol": "ipv4-icmp",
+      "status": "DRY_RUN",
+      "observations": {
+        "metadata": {
+          "mutation": "ihl_0_len_65535",
+          "size": 28,
+          "layouts": [
+            [
+              {
+                "name": "version_ihl",
+                "start": 0,
+                "length": 1
+              },
+              {
+                "name": "tos",
+                "start": 1,
+                "length": 1
+              },
+              {
+                "name": "total_length",
+                "start": 2,
+                "length": 2
+              },
+              {
+                "name": "identification",
+                "start": 4,
+                "length": 2
+              },
+              {
+                "name": "flags_fragment",
+                "start": 6,
+                "length": 2
+              },
+              {
+                "name": "ttl",
+                "start": 8,
+                "length": 1
+              },
+              {
+                "name": "protocol",
+                "start": 9,
+                "length": 1
+              },
+              {
+                "name": "header_checksum",
+                "start": 10,
+                "length": 2
+              },
+              {
+                "name": "src_addr",
+                "start": 12,
+                "length": 4
+              },
+              {
+                "name": "dst_addr",
+                "start": 16,
+                "length": 4
+              },
+              {
+                "name": "icmp_type",
+                "start": 20,
+                "length": 1
+              },
+              {
+                "name": "icmp_code",
+                "start": 21,
+                "length": 1
+              },
+              {
+                "name": "icmp_checksum",
+                "start": 22,
+                "length": 2
+              },
+              {
+                "name": "icmp_data",
+                "start": 24,
+                "length": 4
+              }
+            ]
+          ],
+          "mutated": [
+            [
+              "version_ihl",
+              "total_length"
+            ]
+          ],
+          "labels": [
+            "IPv4 + ICMP echo request"
+          ]
+        },
+        "expected": {
+          "not_allowed": [
+            "kernel_panic",
+            "interface_reset",
+            "crash"
+          ]
+        },
+        "transport": {
+          "sent": false,
+          "payload_count": 1,
+          "payload_sizes": [
+            28
+          ]
+        },
+        "monitor_before": {},
+        "monitor_after": {}
+      },
+      "payload_hex": [
+        "4000ffff0000000040016bfb0a0000010a0000020800596f50494e47"
+      ],
+      "error": null,
+      "index": 46,
+      "seed": 7,
+      "started_at": "2026-10-15T06:23:12.836+00:00",
+      "duration_ms": 0.005,
+      "replay": "python3 examples/run_dry_campaign.py --protocol ipv4-icmp --seed 7 --cases 1000 --only ipv4_icmp_7_ihl_0_len_65535",
+      "reasons": [
+        "nothing was sent"
+      ]
+    },
+    {
+      "case_name": "ipv4_icmp_8_ihl_15_len_28",
+      "layer": "network",
+      "protocol": "ipv4-icmp",
+      "status": "DRY_RUN",
+      "observations": {
+        "metadata": {
+          "mutation": "ihl_15_len_28",
+          "size": 28,
+          "layouts": [
+            [
+              {
+                "name": "version_ihl",
+                "start": 0,
+                "length": 1
+              },
+              {
+                "name": "tos",
+                "start": 1,
+                "length": 1
+              },
+              {
+                "name": "total_length",
+                "start": 2,
+                "length": 2
+              },
+              {
+                "name": "identification",
+                "start": 4,
+                "length": 2
+              },
+              {
+                "name": "flags_fragment",
+                "start": 6,
+                "length": 2
+              },
+              {
+                "name": "ttl",
+                "start": 8,
+                "length": 1
+              },
+              {
+                "name": "protocol",
+                "start": 9,
+                "length": 1
+              },
+              {
+                "name": "header_checksum",
+                "start": 10,
+                "length": 2
+              },
+              {
+                "name": "src_addr",
+                "start": 12,
+                "length": 4
+              },
+              {
+                "name": "dst_addr",
+                "start": 16,
+                "length": 4
+              },
+              {
+                "name": "icmp_type",
+                "start": 20,
+                "length": 1
+              },
+              {
+                "name": "icmp_code",
+                "start": 21,
+                "length": 1
+              },
+              {
+                "name": "icmp_checksum",
+                "start": 22,
+                "length": 2
+              },
+              {
+                "name": "icmp_data",
+                "start": 24,
+                "length": 4
+              }
+            ]
+          ],
+          "mutated": [
+            [
+              "version_ihl"
+            ]
+          ],
+          "labels": [
+            "IPv4 + ICMP echo request"
+          ]
+        },
+        "expected": {
+          "not_allowed": [
+            "kernel_panic",
+            "interface_reset",
+            "crash"
+          ]
+        },
+        "transport": {
+          "sent": false,
+          "payload_count": 1,
+          "payload_sizes": [
+            28
+          ]
+        },
+        "monitor_before": {},
+        "monitor_after": {}
+      },
+      "payload_hex": [
+        "4f00001c0000000040015cdf0a0000010a0000020800596f50494e47"
+      ],
+      "error": null,
+      "index": 47,
+      "seed": 7,
+      "started_at": "2026-10-15T06:23:12.836+00:00",
+      "duration_ms": 0.001,
+      "replay": "python3 examples/run_dry_campaign.py --protocol ipv4-icmp --seed 7 --cases 1000 --only ipv4_icmp_8_ihl_15_len_28",
+      "reasons": [
+        "nothing was sent"
+      ]
+    },
+    {
+      "case_name": "ipv4_icmp_9_ihl_15_len_20",
+      "layer": "network",
+      "protocol": "ipv4-icmp",
+      "status": "DRY_RUN",
+      "observations": {
+        "metadata": {
+          "mutation": "ihl_15_len_20",
+          "size": 28,
+          "layouts": [
+            [
+              {
+                "name": "version_ihl",
+                "start": 0,
+                "length": 1
+              },
+              {
+                "name": "tos",
+                "start": 1,
+                "length": 1
+              },
+              {
+                "name": "total_length",
+                "start": 2,
+                "length": 2
+              },
+              {
+                "name": "identification",
+                "start": 4,
+                "length": 2
+              },
+              {
+                "name": "flags_fragment",
+                "start": 6,
+                "length": 2
+              },
+              {
+                "name": "ttl",
+                "start": 8,
+                "length": 1
+              },
+              {
+                "name": "protocol",
+                "start": 9,
+                "length": 1
+              },
+              {
+                "name": "header_checksum",
+                "start": 10,
+                "length": 2
+              },
+              {
+                "name": "src_addr",
+                "start": 12,
+                "length": 4
+              },
+              {
+                "name": "dst_addr",
+                "start": 16,
+                "length": 4
+              },
+              {
+                "name": "icmp_type",
+                "start": 20,
+                "length": 1
+              },
+              {
+                "name": "icmp_code",
+                "start": 21,
+                "length": 1
+              },
+              {
+                "name": "icmp_checksum",
+                "start": 22,
+                "length": 2
+              },
+              {
+                "name": "icmp_data",
+                "start": 24,
+                "length": 4
+              }
+            ]
+          ],
+          "mutated": [
+            [
+              "version_ihl",
+              "total_length"
+            ]
+          ],
+          "labels": [
+            "IPv4 + ICMP echo request"
+          ]
+        },
+        "expected": {
+          "not_allowed": [
+            "kernel_panic",
+            "interface_reset",
+            "crash"
+          ]
+        },
+        "transport": {
+          "sent": false,
+          "payload_count": 1,
+          "payload_sizes": [
+            28
+          ]
+        },
+        "monitor_before": {},
+        "monitor_after": {}
+      },
+      "payload_hex": [
+        "4f0000140000000040015ce70a0000010a0000020800596f50494e47"
+      ],
+      "error": null,
+      "index": 48,
+      "seed": 7,
+      "started_at": "2026-10-15T06:23:12.836+00:00",
+      "duration_ms": 0.005,
+      "replay": "python3 examples/run_dry_campaign.py --protocol ipv4-icmp --seed 7 --cases 1000 --only ipv4_icmp_9_ihl_15_len_20",
+      "reasons": [
+        "nothing was sent"
+      ]
+    },
+    {
+      "case_name": "ipv4_icmp_10_ihl_15_len_0",
+      "layer": "network",
+      "protocol": "ipv4-icmp",
+      "status": "DRY_RUN",
+      "observations": {
+        "metadata": {
+          "mutation": "ihl_15_len_0",
+          "size": 28,
+          "layouts": [
+            [
+              {
+                "name": "version_ihl",
+                "start": 0,
+                "length": 1
+              },
+              {
+                "name": "tos",
+                "start": 1,
+                "length": 1
+              },
+              {
+                "name": "total_length",
+                "start": 2,
+                "length": 2
+              },
+              {
+                "name": "identification",
+                "start": 4,
+                "length": 2
+              },
+              {
+                "name": "flags_fragment",
+                "start": 6,
+                "length": 2
+              },
+              {
+                "name": "ttl",
+                "start": 8,
+                "length": 1
+              },
+              {
+                "name": "protocol",
+                "start": 9,
+                "length": 1
+              },
+              {
+                "name": "header_checksum",
+                "start": 10,
+                "length": 2
+              },
+              {
+                "name": "src_addr",
+                "start": 12,
+                "length": 4
+              },
+              {
+                "name": "dst_addr",
+                "start": 16,
+                "length": 4
+              },
+              {
+                "name": "icmp_type",
+                "start": 20,
+                "length": 1
+              },
+              {
+                "name": "icmp_code",
+                "start": 21,
+                "length": 1
+              },
+              {
+                "name": "icmp_checksum",
+                "start": 22,
+                "length": 2
+              },
+              {
+                "name": "icmp_data",
+                "start": 24,
+                "length": 4
+              }
+            ]
+          ],
+          "mutated": [
+            [
+              "version_ihl",
+              "total_length"
+            ]
+          ],
+          "labels": [
+            "IPv4 + ICMP echo request"
+          ]
+        },
+        "expected": {
+          "not_allowed": [
+            "kernel_panic",
+            "interface_reset",
+            "crash"
+          ]
+        },
+        "transport": {
+          "sent": false,
+          "payload_count": 1,
+          "payload_sizes": [
+            28
+          ]
+        },
+        "monitor_before": {},
+        "monitor_after": {}
+      },
+      "payload_hex": [
+        "4f0000000000000040015cfb0a0000010a0000020800596f50494e47"
+      ],
+      "error": null,
+      "index": 49,
+      "seed": 7,
+      "started_at": "2026-10-15T06:23:12.837+00:00",
+      "duration_ms": 0.001,
+      "replay": "python3 examples/run_dry_campaign.py --protocol ipv4-icmp --seed 7 --cases 1000 --only ipv4_icmp_10_ihl_15_len_0",
+      "reasons": [
+        "nothing was sent"
+      ]
+    },
+    {
+      "case_name": "ipv4_icmp_11_ihl_15_len_65535",
+      "layer": "network",
+      "protocol": "ipv4-icmp",
+      "status": "DRY_RUN",
+      "observations": {
+        "metadata": {
+          "mutation": "ihl_15_len_65535",
+          "size": 28,
+          "layouts": [
+            [
+              {
+                "name": "version_ihl",
+                "start": 0,
+                "length": 1
+              },
+              {
+                "name": "tos",
+                "start": 1,
+                "length": 1
+              },
+              {
+                "name": "total_length",
+                "start": 2,
+                "length": 2
+              },
+              {
+                "name": "identification",
+                "start": 4,
+                "length": 2
+              },
+              {
+                "name": "flags_fragment",
+                "start": 6,
+                "length": 2
+              },
+              {
+                "name": "ttl",
+                "start": 8,
+                "length": 1
+              },
+              {
+                "name": "protocol",
+                "start": 9,
+                "length": 1
+              },
+              {
+                "name": "header_checksum",
+                "start": 10,
+                "length": 2
+              },
+              {
+                "name": "src_addr",
+                "start": 12,
+                "length": 4
+              },
+              {
+                "name": "dst_addr",
+                "start": 16,
+                "length": 4
+              },
+              {
+                "name": "icmp_type",
+                "start": 20,
+                "length": 1
+              },
+              {
+                "name": "icmp_code",
+                "start": 21,
+                "length": 1
+              },
+              {
+                "name": "icmp_checksum",
+                "start": 22,
+                "length": 2
+              },
+              {
+                "name": "icmp_data",
+                "start": 24,
+                "length": 4
+              }
+            ]
+          ],
+          "mutated": [
+            [
+              "version_ihl",
+              "total_length"
+            ]
+          ],
+          "labels": [
+            "IPv4 + ICMP echo request"
+          ]
+        },
+        "expected": {
+          "not_allowed": [
+            "kernel_panic",
+            "interface_reset",
+            "crash"
+          ]
+        },
+        "transport": {
+          "sent": false,
+          "payload_count": 1,
+          "payload_sizes": [
+            28
+          ]
+        },
+        "monitor_before": {},
+        "monitor_after": {}
+      },
+      "payload_hex": [
+        "4f00ffff0000000040015cfb0a0000010a0000020800596f50494e47"
+      ],
+      "error": null,
+      "index": 50,
+      "seed": 7,
+      "started_at": "2026-10-15T06:23:12.837+00:00",
+      "duration_ms": 0.009,
+      "replay": "python3 examples/run_dry_campaign.py --protocol ipv4-icmp --seed 7 --cases 1000 --only ipv4_icmp_11_ihl_15_len_65535",
+      "reasons": [
+        "nothing was sent"
+      ]
+    },
+    {
+      "case_name": "ipv4_icmp_12_ttl_0",
+      "layer": "network",
+      "protocol": "ipv4-icmp",
+      "status": "DRY_RUN",
+      "observations": {
+        "metadata": {
+          "mutation": "ttl_0",
+          "size": 28,
+          "layouts": [
+            [
+              {
+                "name": "version_ihl",
+                "start": 0,
+                "length": 1
+              },
+              {
+                "name": "tos",
+                "start": 1,
+                "length": 1
+              },
+              {
+                "name": "total_length",
+                "start": 2,
+                "length": 2
+              },
+              {
+                "name": "identification",
+                "start": 4,
+                "length": 2
+              },
+              {
+                "name": "flags_fragment",
+                "start": 6,
+                "length": 2
+              },
+              {
+                "name": "ttl",
+                "start": 8,
+                "length": 1
+              },
+              {
+                "name": "protocol",
+                "start": 9,
+                "length": 1
+              },
+              {
+                "name": "header_checksum",
+                "start": 10,
+                "length": 2
+              },
+              {
+                "name": "src_addr",
+                "start": 12,
+                "length": 4
+              },
+              {
+                "name": "dst_addr",
+                "start": 16,
+                "length": 4
+              },
+              {
+                "name": "icmp_type",
+                "start": 20,
+                "length": 1
+              },
+              {
+                "name": "icmp_code",
+                "start": 21,
+                "length": 1
+              },
+              {
+                "name": "icmp_checksum",
+                "start": 22,
+                "length": 2
+              },
+              {
+                "name": "icmp_data",
+                "start": 24,
+                "length": 4
+              }
+            ]
+          ],
+          "mutated": [
+            [
+              "ttl"
+            ]
+          ],
+          "labels": [
+            "IPv4 + ICMP echo request"
+          ]
+        },
+        "expected": {
+          "not_allowed": [
+            "kernel_panic",
+            "interface_reset",
+            "crash"
+          ]
+        },
+        "transport": {
+          "sent": false,
+          "payload_count": 1,
+          "payload_sizes": [
+            28
+          ]
+        },
+        "monitor_before": {},
+        "monitor_after": {}
+      },
+      "payload_hex": [
+        "4500001c000000000001a6df0a0000010a0000020800596f50494e47"
+      ],
+      "error": null,
+      "index": 51,
+      "seed": 7,
+      "started_at": "2026-10-15T06:23:12.837+00:00",
+      "duration_ms": 0.001,
+      "replay": "python3 examples/run_dry_campaign.py --protocol ipv4-icmp --seed 7 --cases 1000 --only ipv4_icmp_12_ttl_0",
+      "reasons": [
+        "nothing was sent"
+      ]
+    },
+    {
+      "case_name": "ipv4_icmp_13_bad_header_checksum",
+      "layer": "network",
+      "protocol": "ipv4-icmp",
+      "status": "DRY_RUN",
+      "observations": {
+        "metadata": {
+          "mutation": "bad_header_checksum",
+          "size": 28,
+          "layouts": [
+            [
+              {
+                "name": "version_ihl",
+                "start": 0,
+                "length": 1
+              },
+              {
+                "name": "tos",
+                "start": 1,
+                "length": 1
+              },
+              {
+                "name": "total_length",
+                "start": 2,
+                "length": 2
+              },
+              {
+                "name": "identification",
+                "start": 4,
+                "length": 2
+              },
+              {
+                "name": "flags_fragment",
+                "start": 6,
+                "length": 2
+              },
+              {
+                "name": "ttl",
+                "start": 8,
+                "length": 1
+              },
+              {
+                "name": "protocol",
+                "start": 9,
+                "length": 1
+              },
+              {
+                "name": "header_checksum",
+                "start": 10,
+                "length": 2
+              },
+              {
+                "name": "src_addr",
+                "start": 12,
+                "length": 4
+              },
+              {
+                "name": "dst_addr",
+                "start": 16,
+                "length": 4
+              },
+              {
+                "name": "icmp_type",
+                "start": 20,
+                "length": 1
+              },
+              {
+                "name": "icmp_code",
+                "start": 21,
+                "length": 1
+              },
+              {
+                "name": "icmp_checksum",
+                "start": 22,
+                "length": 2
+              },
+              {
+                "name": "icmp_data",
+                "start": 24,
+                "length": 4
+              }
+            ]
+          ],
+          "mutated": [
+            [
+              "header_checksum"
+            ]
+          ],
+          "labels": [
+            "IPv4 + ICMP echo request"
+          ]
+        },
+        "expected": {
+          "not_allowed": [
+            "kernel_panic",
+            "interface_reset",
+            "crash"
+          ]
+        },
+        "transport": {
+          "sent": false,
+          "payload_count": 1,
+          "payload_sizes": [
+            28
+          ]
+        },
+        "monitor_before": {},
+        "monitor_after": {}
+      },
+      "payload_hex": [
+        "4500001c000000004001beef0a0000010a0000020800596f50494e47"
+      ],
+      "error": null,
+      "index": 52,
+      "seed": 7,
+      "started_at": "2026-10-15T06:23:12.837+00:00",
+      "duration_ms": 0.012,
+      "replay": "python3 examples/run_dry_campaign.py --protocol ipv4-icmp --seed 7 --cases 1000 --only ipv4_icmp_13_bad_header_checksum",
+      "reasons": [
+        "nothing was sent"
+      ]
+    },
+    {
+      "case_name": "ipv4_icmp_14_fragment_offset_max",
+      "layer": "network",
+      "protocol": "ipv4-icmp",
+      "status": "DRY_RUN",
+      "observations": {
+        "metadata": {
+          "mutation": "fragment_offset_max",
+          "size": 28,
+          "layouts": [
+            [
+              {
+                "name": "version_ihl",
+                "start": 0,
+                "length": 1
+              },
+              {
+                "name": "tos",
+                "start": 1,
+                "length": 1
+              },
+              {
+                "name": "total_length",
+                "start": 2,
+                "length": 2
+              },
+              {
+                "name": "identification",
+                "start": 4,
+                "length": 2
+              },
+              {
+                "name": "flags_fragment",
+                "start": 6,
+                "length": 2
+              },
+              {
+                "name": "ttl",
+                "start": 8,
+                "length": 1
+              },
+              {
+                "name": "protocol",
+                "start": 9,
+                "length": 1
+              },
+              {
+                "name": "header_checksum",
+                "start": 10,
+                "length": 2
+              },
+              {
+                "name": "src_addr",
+                "start": 12,
+                "length": 4
+              },
+              {
+                "name": "dst_addr",
+                "start": 16,
+                "length": 4
+              },
+              {
+                "name": "icmp_type",
+                "start": 20,
+                "length": 1
+              },
+              {
+                "name": "icmp_code",
+                "start": 21,
+                "length": 1
+              },
+              {
+                "name": "icmp_checksum",
+                "start": 22,
+                "length": 2
+              },
+              {
+                "name": "icmp_data",
+                "start": 24,
+                "length": 4
+              }
+            ]
+          ],
+          "mutated": [
+            [
+              "flags_fragment"
+            ]
+          ],
+          "labels": [
+            "IPv4 + ICMP echo request"
+          ]
+        },
+        "expected": {
+          "not_allowed": [
+            "kernel_panic",
+            "interface_reset",
+            "crash"
+          ]
+        },
+        "transport": {
+          "sent": false,
+          "payload_count": 1,
+          "payload_sizes": [
+            28
+          ]
+        },
+        "monitor_before": {},
+        "monitor_after": {}
+      },
+      "payload_hex": [
+        "4500001c00001fff400146e00a0000010a0000020800596f50494e47"
+      ],
+      "error": null,
+      "index": 53,
+      "seed": 7,
+      "started_at": "2026-10-15T06:23:12.837+00:00",
+      "duration_ms": 0.001,
+      "replay": "python3 examples/run_dry_campaign.py --protocol ipv4-icmp --seed 7 --cases 1000 --only ipv4_icmp_14_fragment_offset_max",
+      "reasons": [
+        "nothing was sent"
+      ]
+    },
+    {
+      "case_name": "ipv4_icmp_15_more_fragments_flag",
+      "layer": "network",
+      "protocol": "ipv4-icmp",
+      "status": "DRY_RUN",
+      "observations": {
+        "metadata": {
+          "mutation": "more_fragments_flag",
+          "size": 28,
+          "layouts": [
+            [
+              {
+                "name": "version_ihl",
+                "start": 0,
+                "length": 1
+              },
+              {
+                "name": "tos",
+                "start": 1,
+                "length": 1
+              },
+              {
+                "name": "total_length",
+                "start": 2,
+                "length": 2
+              },
+              {
+                "name": "identification",
+                "start": 4,
+                "length": 2
+              },
+              {
+                "name": "flags_fragment",
+                "start": 6,
+                "length": 2
+              },
+              {
+                "name": "ttl",
+                "start": 8,
+                "length": 1
+              },
+              {
+                "name": "protocol",
+                "start": 9,
+                "length": 1
+              },
+              {
+                "name": "header_checksum",
+                "start": 10,
+                "length": 2
+              },
+              {
+                "name": "src_addr",
+                "start": 12,
+                "length": 4
+              },
+              {
+                "name": "dst_addr",
+                "start": 16,
+                "length": 4
+              },
+              {
+                "name": "icmp_type",
+                "start": 20,
+                "length": 1
+              },
+              {
+                "name": "icmp_code",
+                "start": 21,
+                "length": 1
+              },
+              {
+                "name": "icmp_checksum",
+                "start": 22,
+                "length": 2
+              },
+              {
+                "name": "icmp_data",
+                "start": 24,
+                "length": 4
+              }
+            ]
+          ],
+          "mutated": [
+            [
+              "flags_fragment"
+            ]
+          ],
+          "labels": [
+            "IPv4 + ICMP echo request"
+          ]
+        },
+        "expected": {
+          "not_allowed": [
+            "kernel_panic",
+            "interface_reset",
+            "crash"
+          ]
+        },
+        "transport": {
+          "sent": false,
+          "payload_count": 1,
+          "payload_sizes": [
+            28
+          ]
+        },
+        "monitor_before": {},
+        "monitor_after": {}
+      },
+      "payload_hex": [
+        "4500001c00002000400146df0a0000010a0000020800596f50494e47"
+      ],
+      "error": null,
+      "index": 54,
+      "seed": 7,
+      "started_at": "2026-10-15T06:23:12.837+00:00",
+      "duration_ms": 0.001,
+      "replay": "python3 examples/run_dry_campaign.py --protocol ipv4-icmp --seed 7 --cases 1000 --only ipv4_icmp_15_more_fragments_flag",
+      "reasons": [
+        "nothing was sent"
+      ]
+    },
+    {
+      "case_name": "bgp_like_0_valid_open_keepalive",
+      "layer": "routing",
+      "protocol": "bgp-like",
+      "status": "DRY_RUN",
+      "observations": {
+        "metadata": {
+          "mutation": "valid_open_keepalive",
+          "stateful": true,
+          "layouts": [
+            [
+              {
+                "name": "marker",
+                "start": 0,
+                "length": 16
+              },
+              {
+                "name": "length",
+                "start": 16,
+                "length": 2
+              },
+              {
+                "name": "type",
+                "start": 18,
+                "length": 1
+              },
+              {
+                "name": "version",
+                "start": 19,
+                "length": 1
+              },
+              {
+                "name": "my_as",
+                "start": 20,
+                "length": 2
+              },
+              {
+                "name": "hold_time",
+                "start": 22,
+                "length": 2
+              },
+              {
+                "name": "bgp_id",
+                "start": 24,
+                "length": 4
+              },
+              {
+                "name": "opt_len",
+                "start": 28,
+                "length": 1
+              }
+            ],
+            [
+              {
+                "name": "marker",
+                "start": 0,
+                "length": 16
+              },
+              {
+                "name": "length",
+                "start": 16,
+                "length": 2
+              },
+              {
+                "name": "type",
+                "start": 18,
+                "length": 1
+              }
+            ]
+          ],
+          "mutated": [
+            [],
+            []
+          ],
+          "labels": [
+            "OPEN",
+            "KEEPALIVE"
+          ]
+        },
+        "expected": {
+          "not_allowed": [
+            "daemon_crash",
+            "neighbor_stuck",
+            "route_table_corruption"
+          ]
+        },
+        "transport": {
+          "sent": false,
+          "payload_count": 2,
+          "payload_sizes": [
+            29,
+            19
+          ]
+        },
+        "monitor_before": {},
+        "monitor_after": {}
+      },
+      "payload_hex": [
+        "ffffffffffffffffffffffffffffffff001d0104fc00005a0a00000100",
+        "ffffffffffffffffffffffffffffffff001304"
+      ],
+      "error": null,
+      "index": 55,
+      "seed": 7,
+      "started_at": "2026-10-15T06:23:12.837+00:00",
+      "duration_ms": 0.012,
+      "replay": "python3 examples/run_dry_campaign.py --protocol bgp-like --seed 7 --cases 1000 --only bgp_like_0_valid_open_keepalive",
+      "reasons": [
+        "nothing was sent"
+      ]
+    },
+    {
+      "case_name": "bgp_like_1_bad_asn",
+      "layer": "routing",
+      "protocol": "bgp-like",
+      "status": "DRY_RUN",
+      "observations": {
+        "metadata": {
+          "mutation": "bad_asn",
+          "stateful": true,
+          "layouts": [
+            [
+              {
+                "name": "marker",
+                "start": 0,
+                "length": 16
+              },
+              {
+                "name": "length",
+                "start": 16,
+                "length": 2
+              },
+              {
+                "name": "type",
+                "start": 18,
+                "length": 1
+              },
+              {
+                "name": "version",
+                "start": 19,
+                "length": 1
+              },
+              {
+                "name": "my_as",
+                "start": 20,
+                "length": 2
+              },
+              {
+                "name": "hold_time",
+                "start": 22,
+                "length": 2
+              },
+              {
+                "name": "bgp_id",
+                "start": 24,
+                "length": 4
+              },
+              {
+                "name": "opt_len",
+                "start": 28,
+                "length": 1
+              }
+            ],
+            [
+              {
+                "name": "marker",
+                "start": 0,
+                "length": 16
+              },
+              {
+                "name": "length",
+                "start": 16,
+                "length": 2
+              },
+              {
+                "name": "type",
+                "start": 18,
+                "length": 1
+              }
+            ]
+          ],
+          "mutated": [
+            [
+              "my_as"
+            ],
+            []
+          ],
+          "labels": [
+            "OPEN",
+            "KEEPALIVE"
+          ]
+        },
+        "expected": {
+          "not_allowed": [
+            "daemon_crash",
+            "neighbor_stuck",
+            "route_table_corruption"
+          ]
+        },
+        "transport": {
+          "sent": false,
+          "payload_count": 2,
+          "payload_sizes": [
+            29,
+            19
+          ]
+        },
+        "monitor_before": {},
+        "monitor_after": {}
+      },
+      "payload_hex": [
+        "ffffffffffffffffffffffffffffffff001d01040000005a0a00000100",
+        "ffffffffffffffffffffffffffffffff001304"
+      ],
+      "error": null,
+      "index": 56,
+      "seed": 7,
+      "started_at": "2026-10-15T06:23:12.837+00:00",
+      "duration_ms": 0.002,
+      "replay": "python3 examples/run_dry_campaign.py --protocol bgp-like --seed 7 --cases 1000 --only bgp_like_1_bad_asn",
+      "reasons": [
+        "nothing was sent"
+      ]
+    },
+    {
+      "case_name": "bgp_like_2_hold_time_zero_legal",
+      "layer": "routing",
+      "protocol": "bgp-like",
+      "status": "DRY_RUN",
+      "observations": {
+        "metadata": {
+          "mutation": "hold_time_zero_legal",
+          "stateful": true,
+          "layouts": [
+            [
+              {
+                "name": "marker",
+                "start": 0,
+                "length": 16
+              },
+              {
+                "name": "length",
+                "start": 16,
+                "length": 2
+              },
+              {
+                "name": "type",
+                "start": 18,
+                "length": 1
+              },
+              {
+                "name": "version",
+                "start": 19,
+                "length": 1
+              },
+              {
+                "name": "my_as",
+                "start": 20,
+                "length": 2
+              },
+              {
+                "name": "hold_time",
+                "start": 22,
+                "length": 2
+              },
+              {
+                "name": "bgp_id",
+                "start": 24,
+                "length": 4
+              },
+              {
+                "name": "opt_len",
+                "start": 28,
+                "length": 1
+              }
+            ],
+            [
+              {
+                "name": "marker",
+                "start": 0,
+                "length": 16
+              },
+              {
+                "name": "length",
+                "start": 16,
+                "length": 2
+              },
+              {
+                "name": "type",
+                "start": 18,
+                "length": 1
+              }
+            ]
+          ],
+          "mutated": [
+            [
+              "hold_time"
+            ],
+            []
+          ],
+          "labels": [
+            "OPEN",
+            "KEEPALIVE"
+          ]
+        },
+        "expected": {
+          "not_allowed": [
+            "daemon_crash",
+            "neighbor_stuck",
+            "route_table_corruption"
+          ]
+        },
+        "transport": {
+          "sent": false,
+          "payload_count": 2,
+          "payload_sizes": [
+            29,
+            19
+          ]
+        },
+        "monitor_before": {},
+        "monitor_after": {}
+      },
+      "payload_hex": [
+        "ffffffffffffffffffffffffffffffff001d0104fc0000000a00000100",
+        "ffffffffffffffffffffffffffffffff001304"
+      ],
+      "error": null,
+      "index": 57,
+      "seed": 7,
+      "started_at": "2026-10-15T06:23:12.837+00:00",
+      "duration_ms": 0.002,
+      "replay": "python3 examples/run_dry_campaign.py --protocol bgp-like --seed 7 --cases 1000 --only bgp_like_2_hold_time_zero_legal",
+      "reasons": [
+        "nothing was sent"
+      ]
+    },
+    {
+      "case_name": "bgp_like_3_hold_time_1_invalid",
+      "layer": "routing",
+      "protocol": "bgp-like",
+      "status": "DRY_RUN",
+      "observations": {
+        "metadata": {
+          "mutation": "hold_time_1_invalid",
+          "stateful": true,
+          "layouts": [
+            [
+              {
+                "name": "marker",
+                "start": 0,
+                "length": 16
+              },
+              {
+                "name": "length",
+                "start": 16,
+                "length": 2
+              },
+              {
+                "name": "type",
+                "start": 18,
+                "length": 1
+              },
+              {
+                "name": "version",
+                "start": 19,
+                "length": 1
+              },
+              {
+                "name": "my_as",
+                "start": 20,
+                "length": 2
+              },
+              {
+                "name": "hold_time",
+                "start": 22,
+                "length": 2
+              },
+              {
+                "name": "bgp_id",
+                "start": 24,
+                "length": 4
+              },
+              {
+                "name": "opt_len",
+                "start": 28,
+                "length": 1
+              }
+            ],
+            [
+              {
+                "name": "marker",
+                "start": 0,
+                "length": 16
+              },
+              {
+                "name": "length",
+                "start": 16,
+                "length": 2
+              },
+              {
+                "name": "type",
+                "start": 18,
+                "length": 1
+              }
+            ]
+          ],
+          "mutated": [
+            [
+              "hold_time"
+            ],
+            []
+          ],
+          "labels": [
+            "OPEN",
+            "KEEPALIVE"
+          ]
+        },
+        "expected": {
+          "not_allowed": [
+            "daemon_crash",
+            "neighbor_stuck",
+            "route_table_corruption"
+          ]
+        },
+        "transport": {
+          "sent": false,
+          "payload_count": 2,
+          "payload_sizes": [
+            29,
+            19
+          ]
+        },
+        "monitor_before": {},
+        "monitor_after": {}
+      },
+      "payload_hex": [
+        "ffffffffffffffffffffffffffffffff001d0104fc0000010a00000100",
+        "ffffffffffffffffffffffffffffffff001304"
+      ],
+      "error": null,
+      "index": 58,
+      "seed": 7,
+      "started_at": "2026-10-15T06:23:12.837+00:00",
+      "duration_ms": 0.001,
+      "replay": "python3 examples/run_dry_campaign.py --protocol bgp-like --seed 7 --cases 1000 --only bgp_like_3_hold_time_1_invalid",
+      "reasons": [
+        "nothing was sent"
+      ]
+    },
+    {
+      "case_name": "bgp_like_4_bad_length_short",
+      "layer": "routing",
+      "protocol": "bgp-like",
+      "status": "DRY_RUN",
+      "observations": {
+        "metadata": {
+          "mutation": "bad_length_short",
+          "stateful": true,
+          "layouts": [
+            [
+              {
+                "name": "marker",
+                "start": 0,
+                "length": 16
+              },
+              {
+                "name": "length",
+                "start": 16,
+                "length": 2
+              },
+              {
+                "name": "type",
+                "start": 18,
+                "length": 1
+              },
+              {
+                "name": "body",
+                "start": 19,
+                "length": 3
+              }
+            ]
+          ],
+          "mutated": [
+            [
+              "length"
+            ]
+          ],
+          "labels": [
+            "OPEN"
+          ]
+        },
+        "expected": {
+          "not_allowed": [
+            "daemon_crash",
+            "neighbor_stuck",
+            "route_table_corruption"
+          ]
+        },
+        "transport": {
+          "sent": false,
+          "payload_count": 1,
+          "payload_sizes": [
+            22
+          ]
+        },
+        "monitor_before": {},
+        "monitor_after": {}
+      },
+      "payload_hex": [
+        "ffffffffffffffffffffffffffffffff000a01616263"
+      ],
+      "error": null,
+      "index": 59,
+      "seed": 7,
+      "started_at": "2026-10-15T06:23:12.837+00:00",
+      "duration_ms": 0.009,
+      "replay": "python3 examples/run_dry_campaign.py --protocol bgp-like --seed 7 --cases 1000 --only bgp_like_4_bad_length_short",
+      "reasons": [
+        "nothing was sent"
+      ]
+    },
+    {
+      "case_name": "bgp_like_5_bad_length_long",
+      "layer": "routing",
+      "protocol": "bgp-like",
+      "status": "DRY_RUN",
+      "observations": {
+        "metadata": {
+          "mutation": "bad_length_long",
+          "stateful": true,
+          "layouts": [
+            [
+              {
+                "name": "marker",
+                "start": 0,
+                "length": 16
+              },
+              {
+                "name": "length",
+                "start": 16,
+                "length": 2
+              },
+              {
+                "name": "type",
+                "start": 18,
+                "length": 1
+              },
+              {
+                "name": "body",
+                "start": 19,
+                "length": 3
+              }
+            ]
+          ],
+          "mutated": [
+            [
+              "length"
+            ]
+          ],
+          "labels": [
+            "OPEN"
+          ]
+        },
+        "expected": {
+          "not_allowed": [
+            "daemon_crash",
+            "neighbor_stuck",
+            "route_table_corruption"
+          ]
+        },
+        "transport": {
+          "sent": false,
+          "payload_count": 1,
+          "payload_sizes": [
+            22
+          ]
+        },
+        "monitor_before": {},
+        "monitor_after": {}
+      },
+      "payload_hex": [
+        "ffffffffffffffffffffffffffffffff100001616263"
+      ],
+      "error": null,
+      "index": 60,
+      "seed": 7,
+      "started_at": "2026-10-15T06:23:12.837+00:00",
+      "duration_ms": 0.008,
+      "replay": "python3 examples/run_dry_campaign.py --protocol bgp-like --seed 7 --cases 1000 --only bgp_like_5_bad_length_long",
+      "reasons": [
+        "nothing was sent"
+      ]
+    },
+    {
+      "case_name": "bgp_like_6_update_before_open",
+      "layer": "routing",
+      "protocol": "bgp-like",
+      "status": "DRY_RUN",
+      "observations": {
+        "metadata": {
+          "mutation": "update_before_open",
+          "stateful": true,
+          "layouts": [
+            [
+              {
+                "name": "marker",
+                "start": 0,
+                "length": 16
+              },
+              {
+                "name": "length",
+                "start": 16,
+                "length": 2
+              },
+              {
+                "name": "type",
+                "start": 18,
+                "length": 1
+              },
+              {
+                "name": "withdrawn_len",
+                "start": 19,
+                "length": 2
+              },
+              {
+                "name": "path_attr_len",
+                "start": 21,
+                "length": 2
+              }
+            ]
+          ],
+          "mutated": [
+            []
+          ],
+          "labels": [
+            "UPDATE"
+          ],
+          "sequence_mutation": "UPDATE sent before any OPEN"
+        },
+        "expected": {
+          "not_allowed": [
+            "daemon_crash",
+            "neighbor_stuck",
+            "route_table_corruption"
+          ]
+        },
+        "transport": {
+          "sent": false,
+          "payload_count": 1,
+          "payload_sizes": [
+            23
+          ]
+        },
+        "monitor_before": {},
+        "monitor_after": {}
+      },
+      "payload_hex": [
+        "ffffffffffffffffffffffffffffffff00170200000000"
+      ],
+      "error": null,
+      "index": 61,
+      "seed": 7,
+      "started_at": "2026-10-15T06:23:12.838+00:00",
+      "duration_ms": 0.005,
+      "replay": "python3 examples/run_dry_campaign.py --protocol bgp-like --seed 7 --cases 1000 --only bgp_like_6_update_before_open",
+      "reasons": [
+        "nothing was sent"
+      ]
+    },
+    {
+      "case_name": "bgp_like_7_duplicate_open",
+      "layer": "routing",
+      "protocol": "bgp-like",
+      "status": "DRY_RUN",
+      "observations": {
+        "metadata": {
+          "mutation": "duplicate_open",
+          "stateful": true,
+          "layouts": [
+            [
+              {
+                "name": "marker",
+                "start": 0,
+                "length": 16
+              },
+              {
+                "name": "length",
+                "start": 16,
+                "length": 2
+              },
+              {
+                "name": "type",
+                "start": 18,
+                "length": 1
+              },
+              {
+                "name": "version",
+                "start": 19,
+                "length": 1
+              },
+              {
+                "name": "my_as",
+                "start": 20,
+                "length": 2
+              },
+              {
+                "name": "hold_time",
+                "start": 22,
+                "length": 2
+              },
+              {
+                "name": "bgp_id",
+                "start": 24,
+                "length": 4
+              },
+              {
+                "name": "opt_len",
+                "start": 28,
+                "length": 1
+              }
+            ],
+            [
+              {
+                "name": "marker",
+                "start": 0,
+                "length": 16
+              },
+              {
+                "name": "length",
+                "start": 16,
+                "length": 2
+              },
+              {
+                "name": "type",
+                "start": 18,
+                "length": 1
+              },
+              {
+                "name": "version",
+                "start": 19,
+                "length": 1
+              },
+              {
+                "name": "my_as",
+                "start": 20,
+                "length": 2
+              },
+              {
+                "name": "hold_time",
+                "start": 22,
+                "length": 2
+              },
+              {
+                "name": "bgp_id",
+                "start": 24,
+                "length": 4
+              },
+              {
+                "name": "opt_len",
+                "start": 28,
+                "length": 1
+              }
+            ]
+          ],
+          "mutated": [
+            [],
+            []
+          ],
+          "labels": [
+            "OPEN",
+            "OPEN"
+          ],
+          "sequence_mutation": "second OPEN in the same session"
+        },
+        "expected": {
+          "not_allowed": [
+            "daemon_crash",
+            "neighbor_stuck",
+            "route_table_corruption"
+          ]
+        },
+        "transport": {
+          "sent": false,
+          "payload_count": 2,
+          "payload_sizes": [
+            29,
+            29
+          ]
+        },
+        "monitor_before": {},
+        "monitor_after": {}
+      },
+      "payload_hex": [
+        "ffffffffffffffffffffffffffffffff001d0104fc00005a0a00000100",
+        "ffffffffffffffffffffffffffffffff001d0104fc00005a0a00000100"
+      ],
+      "error": null,
+      "index": 62,
+      "seed": 7,
+      "started_at": "2026-10-15T06:23:12.838+00:00",
+      "duration_ms": 0.002,
+      "replay": "python3 examples/run_dry_campaign.py --protocol bgp-like --seed 7 --cases 1000 --only bgp_like_7_duplicate_open",
+      "reasons": [
+        "nothing was sent"
+      ]
+    },
+    {
+      "case_name": "bgp_like_8_unknown_message_type",
+      "layer": "routing",
+      "protocol": "bgp-like",
+      "status": "DRY_RUN",
+      "observations": {
+        "metadata": {
+          "mutation": "unknown_message_type",
+          "stateful": true,
+          "layouts": [
+            [
+              {
+                "name": "marker",
+                "start": 0,
+                "length": 16
+              },
+              {
+                "name": "length",
+                "start": 16,
+                "length": 2
+              },
+              {
+                "name": "type",
+                "start": 18,
+                "length": 1
+              },
+              {
+                "name": "body",
+                "start": 19,
+                "length": 7
+              }
+            ]
+          ],
+          "mutated": [
+            [
+              "type"
+            ]
+          ],
+          "labels": [
+            "type 255"
+          ]
+        },
+        "expected": {
+          "not_allowed": [
+            "daemon_crash",
+            "neighbor_stuck",
+            "route_table_corruption"
+          ]
+        },
+        "transport": {
+          "sent": false,
+          "payload_count": 1,
+          "payload_sizes": [
+            26
+          ]
+        },
+        "monitor_before": {},
+        "monitor_after": {}
+      },
+      "payload_hex": [
+        "ffffffffffffffffffffffffffffffff001aff756e6b6e6f776e"
+      ],
+      "error": null,
+      "index": 63,
+      "seed": 7,
+      "started_at": "2026-10-15T06:23:12.838+00:00",
+      "duration_ms": 0.006,
+      "replay": "python3 examples/run_dry_campaign.py --protocol bgp-like --seed 7 --cases 1000 --only bgp_like_8_unknown_message_type",
+      "reasons": [
+        "nothing was sent"
+      ]
+    },
+    {
+      "case_name": "tls_like_0_valid_like",
+      "layer": "encryption_vpn",
+      "protocol": "tls-clienthello-like",
+      "status": "DRY_RUN",
+      "observations": {
+        "metadata": {
+          "mutation": "valid_like",
+          "size": 54,
+          "layouts": [
+            [
+              {
+                "name": "record_type",
+                "start": 0,
+                "length": 1
+              },
+              {
+                "name": "record_version",
+                "start": 1,
+                "length": 2
+              },
+              {
+                "name": "record_length",
+                "start": 3,
+                "length": 2
+              },
+              {
+                "name": "hs_type",
+                "start": 5,
+                "length": 1
+              },
+              {
+                "name": "hs_length",
+                "start": 6,
+                "length": 3
+              },
+              {
+                "name": "client_version",
+                "start": 9,
+                "length": 2
+              },
+              {
+                "name": "random",
+                "start": 11,
+                "length": 32
+              },
+              {
+                "name": "session_id_len",
+                "start": 43,
+                "length": 1
+              },
+              {
+                "name": "cipher_suites_len",
+                "start": 44,
+                "length": 2
+              },
+              {
+                "name": "cipher_suites",
+                "start": 46,
+                "length": 4
+              },
+              {
+                "name": "compression",
+                "start": 50,
+                "length": 2
+              },
+              {
+                "name": "extensions_len",
+                "start": 52,
+                "length": 2
+              },
+              {
+                "name": "extensions",
+                "start": 54,
+                "length": 0
+              }
+            ]
+          ],
+          "mutated": [
+            []
+          ],
+          "labels": [
+            "ClientHello record"
+          ]
+        },
+        "expected": {
+          "not_allowed": [
+            "unexpected_handshake_success",
+            "crash",
+            "hang"
+          ]
+        },
+        "transport": {
+          "sent": false,
+          "payload_count": 1,
+          "payload_sizes": [
+            54
+          ]
+        },
+        "monitor_before": {},
+        "monitor_after": {}
+      },
+      "payload_hex": [
+        "16030300310100002d030352f22665a60c12d289185d950ee8813609166f6b113d178d6c0fd3901ff239a10000041301130201000000"
+      ],
+      "error": null,
+      "index": 64,
+      "seed": 7,
+      "started_at": "2026-10-15T06:23:12.838+00:00",
+      "duration_ms": 0.003,
+      "replay": "python3 examples/run_dry_campaign.py --protocol tls-clienthello-like --seed 7 --cases 1000 --only tls_like_0_valid_like",
+      "reasons": [
+        "nothing was sent"
+      ]
+    },
+    {
+      "case_name": "tls_like_1_bad_record_version",
+      "layer": "encryption_vpn",
+      "protocol": "tls-clienthello-like",
+      "status": "DRY_RUN",
+      "observations": {
+        "metadata": {
+          "mutation": "bad_record_version",
+          "size": 54,
+          "layouts": [
+            [
+              {
+                "name": "record_type",
+                "start": 0,
+                "length": 1
+              },
+              {
+                "name": "record_version",
+                "start": 1,
+                "length": 2
+              },
+              {
+                "name": "record_length",
+                "start": 3,
+                "length": 2
+              },
+              {
+                "name": "hs_type",
+                "start": 5,
+                "length": 1
+              },
+              {
+                "name": "hs_length",
+                "start": 6,
+                "length": 3
+              },
+              {
+                "name": "client_version",
+                "start": 9,
+                "length": 2
+              },
+              {
+                "name": "random",
+                "start": 11,
+                "length": 32
+              },
+              {
+                "name": "session_id_len",
+                "start": 43,
+                "length": 1
+              },
+              {
+                "name": "cipher_suites_len",
+                "start": 44,
+                "length": 2
+              },
+              {
+                "name": "cipher_suites",
+                "start": 46,
+                "length": 4
+              },
+              {
+                "name": "compression",
+                "start": 50,
+                "length": 2
+              },
+              {
+                "name": "extensions_len",
+                "start": 52,
+                "length": 2
+              },
+              {
+                "name": "extensions",
+                "start": 54,
+                "length": 0
+              }
+            ]
+          ],
+          "mutated": [
+            [
+              "record_version"
+            ]
+          ],
+          "labels": [
+            "ClientHello record"
+          ]
+        },
+        "expected": {
+          "not_allowed": [
+            "unexpected_handshake_success",
+            "crash",
+            "hang"
+          ]
+        },
+        "transport": {
+          "sent": false,
+          "payload_count": 1,
+          "payload_sizes": [
+            54
+          ]
+        },
+        "monitor_before": {},
+        "monitor_after": {}
+      },
+      "payload_hex": [
+        "16000000310100002d0303a095f20f9395650cf9380b8edb224a6b248a1e924e8fd0ae2e1a9492a3305f180000041301130201000000"
+      ],
+      "error": null,
+      "index": 65,
+      "seed": 7,
+      "started_at": "2026-10-15T06:23:12.838+00:00",
+      "duration_ms": 0.006,
+      "replay": "python3 examples/run_dry_campaign.py --protocol tls-clienthello-like --seed 7 --cases 1000 --only tls_like_1_bad_record_version",
+      "reasons": [
+        "nothing was sent"
+      ]
+    },
+    {
+      "case_name": "tls_like_2_short_record_length",
+      "layer": "encryption_vpn",
+      "protocol": "tls-clienthello-like",
+      "status": "DRY_RUN",
+      "observations": {
+        "metadata": {
+          "mutation": "short_record_length",
+          "size": 54,
+          "layouts": [
+            [
+              {
+                "name": "record_type",
+                "start": 0,
+                "length": 1
+              },
+              {
+                "name": "record_version",
+                "start": 1,
+                "length": 2
+              },
+              {
+                "name": "record_length",
+                "start": 3,
+                "length": 2
+              },
+              {
+                "name": "hs_type",
+                "start": 5,
+                "length": 1
+              },
+              {
+                "name": "hs_length",
+                "start": 6,
+                "length": 3
+              },
+              {
+                "name": "client_version",
+                "start": 9,
+                "length": 2
+              },
+              {
+                "name": "random",
+                "start": 11,
+                "length": 32
+              },
+              {
+                "name": "session_id_len",
+                "start": 43,
+                "length": 1
+              },
+              {
+                "name": "cipher_suites_len",
+                "start": 44,
+                "length": 2
+              },
+              {
+                "name": "cipher_suites",
+                "start": 46,
+                "length": 4
+              },
+              {
+                "name": "compression",
+                "start": 50,
+                "length": 2
+              },
+              {
+                "name": "extensions_len",
+                "start": 52,
+                "length": 2
+              },
+              {
+                "name": "extensions",
+                "start": 54,
+                "length": 0
+              }
+            ]
+          ],
+          "mutated": [
+            [
+              "record_length"
+            ]
+          ],
+          "labels": [
+            "ClientHello record"
+          ]
+        },
+        "expected": {
+          "not_allowed": [
+            "unexpected_handshake_success",
+            "crash",
+            "hang"
+          ]
+        },
+        "transport": {
+          "sent": false,
+          "payload_count": 1,
+          "payload_sizes": [
+            54
+          ]
+        },
+        "monitor_before": {},
+        "monitor_after": {}
+      },
+      "payload_hex": [
+        "16030300010100002d03038cb610900f9e347fae886dc6507795ec745c4c3fcb2eb2c73e14934c867ee0570000041301130201000000"
+      ],
+      "error": null,
+      "index": 66,
+      "seed": 7,
+      "started_at": "2026-10-15T06:23:12.838+00:00",
+      "duration_ms": 0.002,
+      "replay": "python3 examples/run_dry_campaign.py --protocol tls-clienthello-like --seed 7 --cases 1000 --only tls_like_2_short_record_length",
+      "reasons": [
+        "nothing was sent"
+      ]
+    },
+    {
+      "case_name": "tls_like_3_long_record_length",
+      "layer": "encryption_vpn",
+      "protocol": "tls-clienthello-like",
+      "status": "DRY_RUN",
+      "observations": {
+        "metadata": {
+          "mutation": "long_record_length",
+          "size": 54,
+          "layouts": [
+            [
+              {
+                "name": "record_type",
+                "start": 0,
+                "length": 1
+              },
+              {
+                "name": "record_version",
+                "start": 1,
+                "length": 2
+              },
+              {
+                "name": "record_length",
+                "start": 3,
+                "length": 2
+              },
+              {
+                "name": "hs_type",
+                "start": 5,
+                "length": 1
+              },
+              {
+                "name": "hs_length",
+                "start": 6,
+                "length": 3
+              },
+              {
+                "name": "client_version",
+                "start": 9,
+                "length": 2
+              },
+              {
+                "name": "random",
+                "start": 11,
+                "length": 32
+              },
+              {
+                "name": "session_id_len",
+                "start": 43,
+                "length": 1
+              },
+              {
+                "name": "cipher_suites_len",
+                "start": 44,
+                "length": 2
+              },
+              {
+                "name": "cipher_suites",
+                "start": 46,
+                "length": 4
+              },
+              {
+                "name": "compression",
+                "start": 50,
+                "length": 2
+              },
+              {
+                "name": "extensions_len",
+                "start": 52,
+                "length": 2
+              },
+              {
+                "name": "extensions",
+                "start": 54,
+                "length": 0
+              }
+            ]
+          ],
+          "mutated": [
+            [
+              "record_length"
+            ]
+          ],
+          "labels": [
+            "ClientHello record"
+          ]
+        },
+        "expected": {
+          "not_allowed": [
+            "unexpected_handshake_success",
+            "crash",
+            "hang"
+          ]
+        },
+        "transport": {
+          "sent": false,
+          "payload_count": 1,
+          "payload_sizes": [
+            54
+          ]
+        },
+        "monitor_before": {},
+        "monitor_after": {}
+      },
+      "payload_hex": [
+        "160303ffff0100002d0303ba72499bfa121e836b2ac15726ee7d6b0af6ab13c38e92cae0d15057b159987f0000041301130201000000"
+      ],
+      "error": null,
+      "index": 67,
+      "seed": 7,
+      "started_at": "2026-10-15T06:23:12.838+00:00",
+      "duration_ms": 0.005,
+      "replay": "python3 examples/run_dry_campaign.py --protocol tls-clienthello-like --seed 7 --cases 1000 --only tls_like_3_long_record_length",
+      "reasons": [
+        "nothing was sent"
+      ]
+    },
+    {
+      "case_name": "tls_like_4_empty_cipher_list",
+      "layer": "encryption_vpn",
+      "protocol": "tls-clienthello-like",
+      "status": "DRY_RUN",
+      "observations": {
+        "metadata": {
+          "mutation": "empty_cipher_list",
+          "size": 50,
+          "layouts": [
+            [
+              {
+                "name": "record_type",
+                "start": 0,
+                "length": 1
+              },
+              {
+                "name": "record_version",
+                "start": 1,
+                "length": 2
+              },
+              {
+                "name": "record_length",
+                "start": 3,
+                "length": 2
+              },
+              {
+                "name": "hs_type",
+                "start": 5,
+                "length": 1
+              },
+              {
+                "name": "hs_length",
+                "start": 6,
+                "length": 3
+              },
+              {
+                "name": "client_version",
+                "start": 9,
+                "length": 2
+              },
+              {
+                "name": "random",
+                "start": 11,
+                "length": 32
+              },
+              {
+                "name": "session_id_len",
+                "start": 43,
+                "length": 1
+              },
+              {
+                "name": "cipher_suites_len",
+                "start": 44,
+                "length": 2
+              },
+              {
+                "name": "cipher_suites",
+                "start": 46,
+                "length": 0
+              },
+              {
+                "name": "compression",
+                "start": 46,
+                "length": 2
+              },
+              {
+                "name": "extensions_len",
+                "start": 48,
+                "length": 2
+              },
+              {
+                "name": "extensions",
+                "start": 50,
+                "length": 0
+              }
+            ]
+          ],
+          "mutated": [
+            [
+              "cipher_suites_len",
+              "cipher_suites"
+            ]
+          ],
+          "labels": [
+            "ClientHello record"
+          ]
+        },
+        "expected": {
+          "not_allowed": [
+            "unexpected_handshake_success",
+            "crash",
+            "hang"
+          ]
+        },
+        "transport": {
+          "sent": false,
+          "payload_count": 1,
+          "payload_sizes": [
+            50
+          ]
+        },
+        "monitor_before": {},
+        "monitor_after": {}
+      },
+      "payload_hex": [
+        "160303002d01000029030394cc7411d717f14579b2aa100fbbb34fa593feaed27248b762e3ab5805f0765a00000001000000"
+      ],
+      "error": null,
+      "index": 68,
+      "seed": 7,
+      "started_at": "2026-10-15T06:23:12.838+00:00",
+      "duration_ms": 0.002,
+      "replay": "python3 examples/run_dry_campaign.py --protocol tls-clienthello-like --seed 7 --cases 1000 --only tls_like_4_empty_cipher_list",
+      "reasons": [
+        "nothing was sent"
+      ]
+    },
+    {
+      "case_name": "tls_like_5_odd_cipher_list",
+      "layer": "encryption_vpn",
+      "protocol": "tls-clienthello-like",
+      "status": "DRY_RUN",
+      "observations": {
+        "metadata": {
+          "mutation": "odd_cipher_list",
+          "size": 51,
+          "layouts": [
+            [
+              {
+                "name": "record_type",
+                "start": 0,
+                "length": 1
+              },
+              {
+                "name": "record_version",
+                "start": 1,
+                "length": 2
+              },
+              {
+                "name": "record_length",
+                "start": 3,
+                "length": 2
+              },
+              {
+                "name": "hs_type",
+                "start": 5,
+                "length": 1
+              },
+              {
+                "name": "hs_length",
+                "start": 6,
+                "length": 3
+              },
+              {
+                "name": "client_version",
+                "start": 9,
+                "length": 2
+              },
+              {
+                "name": "random",
+                "start": 11,
+                "length": 32
+              },
+              {
+                "name": "session_id_len",
+                "start": 43,
+                "length": 1
+              },
+              {
+                "name": "cipher_suites_len",
+                "start": 44,
+                "length": 2
+              },
+              {
+                "name": "cipher_suites",
+                "start": 46,
+                "length": 1
+              },
+              {
+                "name": "compression",
+                "start": 47,
+                "length": 2
+              },
+              {
+                "name": "extensions_len",
+                "start": 49,
+                "length": 2
+              },
+              {
+                "name": "extensions",
+                "start": 51,
+                "length": 0
+              }
+            ]
+          ],
+          "mutated": [
+            [
+              "cipher_suites_len",
+              "cipher_suites"
+            ]
+          ],
+          "labels": [
+            "ClientHello record"
+          ]
+        },
+        "expected": {
+          "not_allowed": [
+            "unexpected_handshake_success",
+            "crash",
+            "hang"
+          ]
+        },
+        "transport": {
+          "sent": false,
+          "payload_count": 1,
+          "payload_sizes": [
+            51
+          ]
+        },
+        "monitor_before": {},
+        "monitor_after": {}
+      },
+      "payload_hex": [
+        "160303002e0100002a03032b9c1d7e0f37c44921bd3f6564eadf7f142a72668c47e223d16edd8c47b46afc0000011301000000"
+      ],
+      "error": null,
+      "index": 69,
+      "seed": 7,
+      "started_at": "2026-10-15T06:23:12.838+00:00",
+      "duration_ms": 0.005,
+      "replay": "python3 examples/run_dry_campaign.py --protocol tls-clienthello-like --seed 7 --cases 1000 --only tls_like_5_odd_cipher_list",
+      "reasons": [
+        "nothing was sent"
+      ]
+    },
+    {
+      "case_name": "tls_like_6_oversized_extension",
+      "layer": "encryption_vpn",
+      "protocol": "tls-clienthello-like",
+      "status": "DRY_RUN",
+      "observations": {
+        "metadata": {
+          "mutation": "oversized_extension",
+          "size": 2102,
+          "layouts": [
+            [
+              {
+                "name": "record_type",
+                "start": 0,
+                "length": 1
+              },
+              {
+                "name": "record_version",
+                "start": 1,
+                "length": 2
+              },
+              {
+                "name": "record_length",
+                "start": 3,
+                "length": 2
+              },
+              {
+                "name": "hs_type",
+                "start": 5,
+                "length": 1
+              },
+              {
+                "name": "hs_length",
+                "start": 6,
+                "length": 3
+              },
+              {
+                "name": "client_version",
+                "start": 9,
+                "length": 2
+              },
+              {
+                "name": "random",
+                "start": 11,
+                "length": 32
+              },
+              {
+                "name": "session_id_len",
+                "start": 43,
+                "length": 1
+              },
+              {
+                "name": "cipher_suites_len",
+                "start": 44,
+                "length": 2
+              },
+              {
+                "name": "cipher_suites",
+                "start": 46,
+                "length": 4
+              },
+              {
+                "name": "compression",
+                "start": 50,
+                "length": 2
+              },
+              {
+                "name": "extensions_len",
+                "start": 52,
+                "length": 2
+              },
+              {
+                "name": "extensions",
+                "start": 54,
+                "length": 2048
+              }
+            ]
+          ],
+          "mutated": [
+            [
+              "extensions_len",
+              "extensions"
+            ]
+          ],
+          "labels": [
+            "ClientHello record"
+          ]
+        },
+        "expected": {
+          "not_allowed": [
+            "unexpected_handshake_success",
+            "crash",
+            "hang"
+          ]
+        },
+        "transport": {
+          "sent": false,
+          "payload_count": 1,
+          "payload_sizes": [
+            2102
+          ]
+        },
+        "monitor_before": {},
+        "monitor_after": {}
+      },
+      "payload_hex": [
+        "16030308310100082d03035baee261f53b26152d263ba83b037cd4962e434801256b885e9c9051f320b0db00000413011302010008004141414141414141414141414141414141414141414141414141414141414141414141414141414141414141414141414141414141414141414141414141414141414141414141414141414141414141414141414141414141414141414141414141414141414141414141414141414141414141414141414141414141414141414141414141414141414141414141414141414141414141414141414141414141414141414141414141414141414141414141414141414141414141414141414141414141414141414141414141414141414141414141414141414141414141414141414141414141414141414141414141414141414141414141414141414141414141414141414141414141414141414141414141414141414141414141414141414141414141414141414141414141414141414141414141414141414141414141414141414141414141414141414141414141414141414141414141414141414141414141414141414141414141414141414141414141414141414141414141414141414141414141414141414141414141414141414141414141414141414141414141414141414141414141414141414141414141414141414141414141414141414141414141414141414141414141414141414141414141414141414141414141414141414141414141414141414141414141414141414141414141414141414141414141414141414141414141414141414141414141414141414141414141414141414141414141414141414141414141414141414141414141414141414141414141414141414141414141414141414141414141414141414141414141414141414141414141414141414141414141414141414141414141414141414141414141414141414141414141414141414141414141414141414141414141414141414141414141414141414141414141414141414141414141414141414141414141414141414141414141414141414141414141414141414141414141414141414141414141414141414141414141414141414141414141414141414141414141414141414141414141414141414141414141414141414141414141414141414141414141414141414141414141414141414141414141414141414141414141414141414141414141414141414141414141414141414141414141414141414141414141414141414141414141414141414141414141414141414141414141414141414141414141414141414141414141414141414141414141414141414141414141414141414141414141414141414141414141414141414141414141414141414141414141414141414141414141414141414141414141414141414141414141414141414141414141414141414141414141414141414141414141414141414141414141414141414141414141414141414141414141414141414141414141414141414141414141414141414141414141414141414141414141414141414141414141414141414141414141414141414141414141414141414141414141414141414141414141414141414141414141414141414141414141414141414141414141414141414141414141414141414141414141414141414141414141414141414141414141414141414141414141414141414141414141414141414141414141414141414141414141414141414141414141414141414141414141414141414141414141414141414141414141414141414141414141414141414141414141414141414141414141414141414141414141414141414141414141414141414141414141414141414141414141414141414141414141414141414141414141414141414141414141414141414141414141414141414141414141414141414141414141414141414141414141414141414141414141414141414141414141414141414141414141414141414141414141414141414141414141414141414141414141414141414141414141414141414141414141414141414141414141414141414141414141414141414141414141414141414141414141414141414141414141414141414141414141414141414141414141414141414141414141414141414141414141414141414141414141414141414141414141414141414141414141414141414141414141414141414141414141414141414141414141414141414141414141414141414141414141414141414141414141414141414141414141414141414141414141414141414141414141414141414141414141414141414141414141414141414141414141414141414141414141414141414141414141414141414141414141414141414141414141414141414141414141414141414141414141414141414141414141414141414141414141414141414141414141414141414141414141414141414141414141414141414141414141414141414141414141414141414141414141414141414141414141414141414141414141414141414141414141414141414141414141414141414141414141414141414141414141414141414141414141414141414141414141414141414141414141414141414141414141414141414141414141414141414141414141414141414141414141414141414141414141414141414141414141414141414141414141414141414141414141414141414141414141414141414141414141414141414141414141414141414141414141414141414141414141414141414141414141414141414141414141414141414141414141414141414141414141414141414141"
+      ],
+      "error": null,
+      "index": 70,
+      "seed": 7,
+      "started_at": "2026-10-15T06:23:12.838+00:00",
+      "duration_ms": 0.002,
+      "replay": "python3 examples/run_dry_campaign.py --protocol tls-clienthello-like --seed 7 --cases 1000 --only tls_like_6_oversized_extension",
+      "reasons": [
+        "nothing was sent"
+      ]
+    },
+    {
+      "case_name": "tls_like_7_bad_handshake_length",
+      "layer": "encryption_vpn",
+      "protocol": "tls-clienthello-like",
+      "status": "DRY_RUN",
+      "observations": {
+        "metadata": {
+          "mutation": "bad_handshake_length",
+          "size": 54,
+          "layouts": [
+            [
+              {
+                "name": "record_type",
+                "start": 0,
+                "length": 1
+              },
+              {
+                "name": "record_version",
+                "start": 1,
+                "length": 2
+              },
+              {
+                "name": "record_length",
+                "start": 3,
+                "length": 2
+              },
+              {
+                "name": "hs_type",
+                "start": 5,
+                "length": 1
+              },
+              {
+                "name": "hs_length",
+                "start": 6,
+                "length": 3
+              },
+              {
+                "name": "client_version",
+                "start": 9,
+                "length": 2
+              },
+              {
+                "name": "random",
+                "start": 11,
+                "length": 32
+              },
+              {
+                "name": "session_id_len",
+                "start": 43,
+                "length": 1
+              },
+              {
+                "name": "cipher_suites_len",
+                "start": 44,
+                "length": 2
+              },
+              {
+                "name": "cipher_suites",
+                "start": 46,
+                "length": 4
+              },
+              {
+                "name": "compression",
+                "start": 50,
+                "length": 2
+              },
+              {
+                "name": "extensions_len",
+                "start": 52,
+                "length": 2
+              },
+              {
+                "name": "extensions",
+                "start": 54,
+                "length": 0
+              }
+            ]
+          ],
+          "mutated": [
+            [
+              "hs_length"
+            ]
+          ],
+          "labels": [
+            "ClientHello record"
+          ]
+        },
+        "expected": {
+          "not_allowed": [
+            "unexpected_handshake_success",
+            "crash",
+            "hang"
+          ]
+        },
+        "transport": {
+          "sent": false,
+          "payload_count": 1,
+          "payload_sizes": [
+            54
+          ]
+        },
+        "monitor_before": {},
+        "monitor_after": {}
+      },
+      "payload_hex": [
+        "160303003101ffffff030383f39ea7adbd0d74e6dec7f3dfaecc8f646566641a7ba2660f3011fc3570291c0000041301130201000000"
+      ],
+      "error": null,
+      "index": 71,
+      "seed": 7,
+      "started_at": "2026-10-15T06:23:12.838+00:00",
+      "duration_ms": 0.005,
+      "replay": "python3 examples/run_dry_campaign.py --protocol tls-clienthello-like --seed 7 --cases 1000 --only tls_like_7_bad_handshake_length",
+      "reasons": [
+        "nothing was sent"
+      ]
+    }
+  ]
+}

@@ -2,6 +2,29 @@
 
 ## Unreleased
 
+### Added (third round)
+- `core/lynis.py`: wraps Lynis (https://cisofy.com/lynis/) to audit the lab host's security and hardening
+  posture. `audit()` runs and parses a Lynis report; `compare()` diffs two snapshots.
+- `examples/run_lynis_audit.py`: standalone host audit, independent of any fuzz campaign.
+- `--lynis` / `--lynis-full` on both `run_dry_campaign.py` and `run_live_campaign.py`: audits the host before
+  and after the campaign and records the diff in the report (`meta.lynis`). Printed to the console and shown
+  in the UI's summary pane.
+- Tests against a stub `lynis` binary, including a missing-binary case, a report-less exit, and a timeout.
+- `ui/lynis_report.py` and `--html` on both `run_lynis_audit.py` and `run_live_campaign.py --lynis`: a
+  standalone, readable audit report (hardening index, warnings, suggestions, or a before/after diff).
+
+### Added (second round)
+- Live mode: `targets` in campaign files, `examples/run_live_campaign.py`, mandatory `--confirm-lab`, lab guard on every target.
+- Oracles: `no_unexpected_state_transition` and `no_resource_leak` (with `ResourceMonitor`, `CompositeMonitor`, `LeakDetector`).
+- Models: OSPF Hello, IKEv2 SA_INIT and WireGuard initiation. BGP and TLS now mark which cases must be rejected.
+- Crash minimizer (`core/minimizer.py`, `--minimize`), with the result shown in the console.
+- The console shows a "Live run" badge and the targets for live reports.
+
+### Changed (second round)
+- `no_crash` compares only the process snapshot, so memory readings cannot look like a crash.
+- `LocalProcessMonitor(exact=True)` matches the process name exactly.
+- `run_dry_campaign.py` and the console always run dry, even if the campaign file says `mode: live`.
+
 ### Added
 - Web console (`ui/server.py`) and a single-file UI that also renders saved HTML reports (`--html`).
 - Field layouts and mutated-field tracking on every case, so reports show what each mutation changed.
